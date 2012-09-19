@@ -1,21 +1,21 @@
-
-=== POLYPHEMUS ===
+	=== POLYPHEMUS ===
 	
-		Un pequenno juego roguelike en Java por J. Francisco Martin. Creado a 
-	partir de las notas de Trystan Spangler: 
-	http://trystans.blogspot.com.es/search/label/roguelike%20tutorial
+Un pequenno juego roguelike en Java por J. Francisco Martin. Creado a partir de 
+las notas de Trystan Spangler: 
+http://trystans.blogspot.com.es/search/label/roguelike%20tutorial
 
-		ADVERTENCIA: Se ha procurado suprimir todos los acentos para evitar 
-	problemas de compatibilidad entre diferentes computadoras.
+NOTA: Se ha procurado suprimir todos los acentos a fin de evitar posibles 
+problemas de compatibilidad entre diferentes computadoras.
 
-INSTRUCCIONES: Pantalla de juego
+
+	INSTRUCCIONES: Pantalla de juego
 	
 	W/A/S/D	: Movimiento del personaje
 	E		: Accion principal
 	ESC		: Acceso al menu principal
 	I		: Acceso al menu de inventario
 	
-INSTRUCCIONES: Pantalla de inventario
+	INSTRUCCIONES: Pantalla de inventario
 	
 	W/S		: Movimiento entre objetos
 	A/D		: Movimiento entre categorias
