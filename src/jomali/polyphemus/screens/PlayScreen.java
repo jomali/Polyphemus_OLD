@@ -149,7 +149,7 @@ public class PlayScreen implements Screen {
 	////////////////////////////////////////////////////////////////////////////
 	
 	public PlayScreen() {
-		int spw = (ApplicationMain.WIDTH / 4);
+		int spw = (ApplicationMain.WIDTH / 3);
 
 		gamePanel = new GamePanel(1, 1,
 				ApplicationMain.WIDTH - (spw) - 1, ApplicationMain.HEIGHT - 2);
@@ -235,7 +235,7 @@ public class PlayScreen implements Screen {
 		statusPanel.display(terminal);
 		
 		terminal.write(RlTerminal.TL, worldName(), 2, 0, Color.BLACK, Color.WHITE);
-		terminal.write(RlTerminal.BL, " Espacio para mensajes ", 2, 0, Color.BLACK, Color.WHITE);
+//		terminal.write(RlTerminal.BL, " Espacio para mensajes ", 2, 0, Color.BLACK, Color.WHITE);
 		
 		if (subscreen != null) subscreen.displayOutput(terminal);
 	}
@@ -273,6 +273,10 @@ public class PlayScreen implements Screen {
 			case '>':					player.moveBy( 0, 0, 1); break;
 			}
 		}
+		
+		if (subscreen == null) world.update();
+		
+		if (player.hp() < 1) return new LoseScreen();
 		
 		return this;
 	}
