@@ -52,34 +52,26 @@ public class PlayScreen implements Screen {
 	
 	////////////////////////////////////////////////////////////////////////////
 	
-	private class GamePanel {
+	private class GamePanel extends Panel {
 		
-		private int width;
-		private int height;
-		private int xOffset;
-		private int yOffset;
-		
-		GamePanel(int width, int height, int xOffset, int yOffset) {
-			this.width		= width;
-			this.height		= height;
-			this.xOffset	= xOffset;
-			this.yOffset	= yOffset;
+		GamePanel(int xOffset, int yOffset, int width, int height) {
+			super(xOffset, yOffset, width, height);
 		}
 		
 		private int getScrollX() {
-			return Math.max(0, Math.min(player.x - width / 2, 
-					world.width() - width));
+			return Math.max(0, Math.min(player.x - width() / 2, 
+					world.width() - width()));
 		}
 		
 		private int getScrollY() {
-			return Math.max(0, Math.min(player.y - height / 2,
-					world.height() - height));
+			return Math.max(0, Math.min(player.y - height() / 2,
+					world.height() - height()));
 		}
 		
 		private void displayMessages(RlTerminal terminal, List<String> messages) {
-			int top = (height+yOffset) - messages.size();
+			int top = (height()+yOffset()) - messages.size();
 			for (int i=0; i<messages.size(); i++) {
-				terminal.write(RlTerminal.TL, messages.get(i), xOffset+1, top+i);
+				terminal.write(RlTerminal.TL, messages.get(i), xOffset()+1, top+i);
 			}
 			// TODO: Antes de limipiar la lista, los mensajes podrían copiarse a 
 			// otra lista independiente (o una lista de listas) de forma que se 
@@ -90,8 +82,8 @@ public class PlayScreen implements Screen {
 		private void displayTiles(RlTerminal terminal, int left, int top) {
 			fov.update(player.x, player.y, player.z, player.visionRadius());
 			
-			for (int x = xOffset; x < (width+xOffset); x++) {
-				for (int y = yOffset; y < (height+yOffset); y++) {
+			for (int x = xOffset(); x < (width()+xOffset()); x++) {
+				for (int y = yOffset(); y < (height()+yOffset()); y++) {
 // TODO:
 // left = getScrollX(); [...]
 // int wx = x + left - xOffset
@@ -109,9 +101,10 @@ public class PlayScreen implements Screen {
 			}
 		}
 		
+		@Override
 		public void display(RlTerminal terminal) {			
-			int left	= getScrollX() - xOffset;
-			int top		= getScrollY() - yOffset;
+			int left	= getScrollX() - xOffset();
+			int top		= getScrollY() - yOffset();
 			displayTiles(terminal, left, top);
 			displayMessages(terminal, messages);
 		}
@@ -119,40 +112,37 @@ public class PlayScreen implements Screen {
 	
 	////////////////////////////////////////////////////////////////////////////
 	
-	private class StatusPanel {
+	private class StatusPanel extends Panel {
 		
-		private int width;
-		private int height;
-		private int xOffset;
-		private int yOffset;
-		
-		StatusPanel(int width, int height, int xOffset, int yOffset) {
-			this.width		= width;
-			this.height		= height;
-			this.xOffset	= xOffset;
-			this.yOffset	= yOffset;
+		StatusPanel(int xOffset, int yOffset, int width, int height) {
+			super(xOffset, yOffset, width, height);
 		}
 		
 		private String[] status() {
-			String[] result = new String[2];
+			String[] result = new String[4];
 			result[0] = player.name();
 			result[1] = "HP: "+ player.hp()+ "/"+ player.maxHp();
+			result[2] = "AT: "+ player.attackValue();
+			result[3] = "DF: "+ player.defenseValue();
 			return result;
 		}
 		
 		private Color[] colors() {
-			Color[] result = new Color[2];
+			Color[] result = new Color[4];
 			result[0] = player.color();
 			result[1] = SColor.WHITE;
+			result[2] = SColor.WHITE;
+			result[3] = SColor.WHITE;
 			return result;
 		}
 		
+		@Override
 		public void display(RlTerminal terminal) {
 			String[] status = status();
 			
 			for (int i=0; i<status.length; i++) 
-				terminal.cls(xOffset+1, yOffset+1+i, width-1, 1, SColor.RED);
-			terminal.write(RlTerminal.TL, status(), xOffset+1, yOffset+1, colors());
+				terminal.cls(xOffset()+1, yOffset()+1+i, width()-1, 1);
+			terminal.write(RlTerminal.TL, status(), xOffset()+1, yOffset()+1, colors());
 		}
 	}
 
@@ -161,27 +151,47 @@ public class PlayScreen implements Screen {
 	public PlayScreen() {
 		int spw = (ApplicationMain.WIDTH / 4);
 
-		gamePanel = new GamePanel(
-				ApplicationMain.WIDTH - (spw) - 1, ApplicationMain.HEIGHT - 2,
-				1, 1);
-		statusPanel = new StatusPanel(
-				(spw) - 2, ApplicationMain.HEIGHT - 2,
-				ApplicationMain.WIDTH - (spw) + 1, 1);
+		gamePanel = new GamePanel(1, 1,
+				ApplicationMain.WIDTH - (spw) - 1, ApplicationMain.HEIGHT - 2);
+		statusPanel = new StatusPanel(ApplicationMain.WIDTH - (spw) + 1, 1,
+				(spw) - 2, ApplicationMain.HEIGHT - 2);
 		
-		world = new WorldBuilder(90, 32, 5).makeCaves().build("Cave");
+		world	 = new WorldBuilder(90, 32, 5).makeCaves().build("The Cave");
 		messages = new ArrayList<String>();
-		fov = new FieldOfView(world);
+		fov		 = new FieldOfView(world);
 		
 		EntityFactory factory = new EntityFactory(world);
 		createCreatures(factory);
+		createItems(factory);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
 	// Metodos privados:
 	
 	private void createCreatures(EntityFactory factory) {
-		// Se crea al jugador:
+		// Jugador
 		player = factory.newPlayer("Odysseus", '@', SColor.BLOOD, messages, fov);
+		for (int z=0; z<world.depth(); z++) {
+		// Fungus
+			for (int i=0; i<8; i++) factory.newFungus(z);
+		// Bat
+			for (int i=0; i<20; i++) factory.newBat(z);
+		}
+	}
+	
+	private void createItems(EntityFactory factory) {
+		for (int z=0; z<world.depth(); z++) {
+			for (int i=0; i<world.width()*world.height() / 20; i++) {
+				factory.newRock(z);
+			}
+			factory.newFruit(z);
+			factory.newEdibleWeapon(z);
+			factory.newBread(z);
+			factory.randomArmor(z);
+			factory.randomWeapon(z);
+			factory.randomWeapon(z);
+		}
+		factory.newVictoryItem(world.depth() - 1);
 	}
 	
 	private void displayFrame(RlTerminal terminal) {
@@ -195,8 +205,8 @@ public class PlayScreen implements Screen {
 		char bottomRightCorner	= (char)188;
 		char bottomCenterCorner	= (char)202;
 */
-		char horizontalFrame	= (char)178;
-		char verticalFrame		= (char)178;
+		char horizontalFrame	= (char)177; // 178
+		char verticalFrame		= (char)177; // 178
 		
 		for (int i=0; i<ApplicationMain.WIDTH; i++) {
 			terminal.write(RlTerminal.TL, horizontalFrame, i, 0);
@@ -205,7 +215,7 @@ public class PlayScreen implements Screen {
 		for (int j=0; j<ApplicationMain.HEIGHT; j++) {
 			terminal.write(RlTerminal.TL, verticalFrame, 0, j);
 			terminal.write(RlTerminal.TR, verticalFrame, 0, j);
-			terminal.write(RlTerminal.TR, verticalFrame, statusPanel.width+1, j);
+			terminal.write(RlTerminal.TR, verticalFrame, statusPanel.width()+1, j);
 		}		
 	}
 	

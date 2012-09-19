@@ -43,16 +43,13 @@ public abstract class CreatureAi {
 			creature.y = y;
 			creature.z = z;
 		}
-		else {
-			creature.doAction("bump into a wall");
-		}
+		else creature.doAction("bump into a wall");
 	}
 	
 	public void onUpdate() { }
 	
 	public void onNotify(String message) { }
 	
-	// TODO: Incompleto
 	public boolean canSee(int wx, int wy, int wz) {
 		if (creature.z != wz)
 			return false;
@@ -62,7 +59,7 @@ public abstract class CreatureAi {
 			return false;
 		
 		for (Point p : new Line(creature.x, creature.y, wx, wy)) {
-			if (creature.tile(p.x, p.y, p.z).isGround() || (p.x == wx && p.y == wy))
+			if (creature.tile(p.x, p.y, wz).isGround() || p.x == wx && p.y == wy)
 				continue;
 			return false;
 		}
@@ -75,8 +72,8 @@ public abstract class CreatureAi {
 		int mx = (int)(Math.random() * 3) - 1;
 		int my = (int)(Math.random() * 3) - 1;
 		
-		Creature other = creature.creature(creature.x, creature.y, creature.z);
-
+		Creature other = creature.creature(creature.x + mx, creature.y + my, creature.z);
+		
 		if (other != null && other.name().equals(creature.name()) 
 				|| !creature.tile(creature.x+mx, creature.y+my, creature.z).isGround())
 			return;

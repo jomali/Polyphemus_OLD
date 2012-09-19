@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 
 import jomali.polyphemus.ApplicationMain;
 import jomali.polyphemus.util.RlTerminal;
+import jomali.polyphemus.util.SColor;
 
 /**
  * Primera pantalla con la que se encontraran los usuarios. Muestra algo de 
@@ -37,21 +38,22 @@ public class StartScreen implements Screen {
 	
 	@Override
 	public void displayOutput(RlTerminal terminal) {
-		
+				
 		String title = "=== "+ ApplicationMain.NAME.toUpperCase()+ " ===";
 		String[] introduction = new String[] {
-				"\"The we began to turn our glances",
+				"\"Then we began to turn our glances",
 				"to the land of the Kyklopes tribe nearby;",
 				"we could see smoke and hear voices",
 				"and the bleating of sheep and goats...",
 				"When we reached the stretch of land I spoke of",
 				"--it was not far away--",
-				"there on the shore beside the sea we saw a high cave",
-				"overarched width bay-trees.\""
+				"there on the shore beside the sea",
+				"we saw a high CAVE overarched with bay-trees.\"",
+				"Homer, Odyssey 9.187 - 542",
 		};
 		
 		terminal.write(RlTerminal.TC, title, 0, 1);
-		terminal.write(RlTerminal.MC, introduction, 0, 0);
+		terminal.write(RlTerminal.MC, introduction, 0, 0, SColor.BLOOD);
 		// TODO: Metodos para colorear palabras independientes dentro de una 
 		// cadena (para poder resaltar ENTER, por ejemplo).
 		terminal.write(RlTerminal.BC, "[ Press ENTER to continue ]", 0, 1);

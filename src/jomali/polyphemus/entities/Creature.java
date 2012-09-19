@@ -103,6 +103,8 @@ public class Creature {
 		// TODO: Estos son los atributos que son proclives a ser modificados. 
 		// En cualquier caso, se deberian inicializar de forma diferente.
 		this.visionRadius	= 9;
+		this.attackValue	= attack;
+		this.defenseValue	= defense;
 		this.inventory		= new Inventory(20);
 		this.maxFood		= 1000;
 		this.food			= (maxFood / 3) * 2;
