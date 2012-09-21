@@ -41,8 +41,8 @@ import jomali.polyphemus.util.RlTerminal;
  */
 public class PlayScreen implements Screen {
 	
-	private GamePanel gamePanel;
-	private StatusPanel statusPanel;
+	private Panel gamePanel;
+	private Panel statusPanel;
 	private Screen subscreen;
 	
 	private World world;
@@ -93,7 +93,7 @@ public class PlayScreen implements Screen {
 					int wy = y + top;
 					if (player.canSee(wx, wy, player.z))
 						terminal.write(RlTerminal.TL, world.glyph(wx, wy, player.z), 
-								x, y, world.color(wx, wy, player.z));
+								x, y, world.foregroundColor(wx, wy, player.z));
 					else
 						terminal.write(RlTerminal.TL, fov.tile(wx, wy, player.z).glyph(), 
 								x, y, SColor.DARK_GRAY);
@@ -129,7 +129,7 @@ public class PlayScreen implements Screen {
 		
 		private Color[] colors() {
 			Color[] result = new Color[4];
-			result[0] = player.color();
+			result[0] = player.foregroundColor();
 			result[1] = SColor.WHITE;
 			result[2] = SColor.WHITE;
 			result[3] = SColor.WHITE;

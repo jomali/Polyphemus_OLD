@@ -47,32 +47,32 @@ public class EntityFactory {
 	
 	public Creature newPlayer(String name, char glyph, Color color, 
 			List<String> messages, FieldOfView fov) {
-		Creature creature = new Creature(world, name, glyph, color, 
-				100, 20, 5);
+		Creature creature = new Creature(name, glyph, color, null, 
+				world, 100, 20, 5);
 		world.addAtEmptyLocation(creature, 0);
 		new PlayerAi(creature, messages, fov);
 		return creature;
 	}
 	
 	public Creature newPlayer(String name, List<String> messages, FieldOfView fov) {
-		Creature creature = new Creature(world, name, '@', SColor.WHITE, 
-				100, 20, 5);
+		Creature creature = new Creature(name, '@', SColor.WHITE, null, 
+				world, 100, 20, 5);
 		world.addAtEmptyLocation(creature, 0);
 		new PlayerAi(creature, messages, fov);
 		return creature;
 	}
 	
 	public Creature newFungus(int depth) {
-		Creature creature = new Creature(world, "Fungus", 'f', SColor.GREEN_BAMBOO, 
-				10, 0, 0);
+		Creature creature = new Creature("Fungus", 'f', SColor.GREEN_BAMBOO, null, 
+				world, 10, 0, 0);
 		world.addAtEmptyLocation(creature, depth);
-		new FungusAi(creature, this);
+		new FungusAi(creature, 5, this);
 		return creature;
 	}
 	
 	public Creature newBat(int depth) {
-		Creature creature = new Creature(world, "Bat", 'b', SColor.PALE_MAGENTA,
-				15, 5, 0);
+		Creature creature = new Creature("Bat", 'b', SColor.PALE_MAGENTA, null, 
+				world, 15, 5, 0);
 		world.addAtEmptyLocation(creature, depth);
 		new BatAi(creature);
 		return creature;
@@ -93,47 +93,47 @@ public class EntityFactory {
 				SColor.GRAY, SColor.GRAY_ASPARAGUS, SColor.KHAKI, SColor.LAVENDER_BLUE, 
 				SColor.PALE_BROWN, SColor.SEN_NO_RIKYUS_TEA, SColor.SEPIA
 		};
-		Item rock = new Item("roca", ',', colors[(int)(Math.random()*colors.length)]);
+		Item rock = new Item("roca", ',', colors[(int)(Math.random()*colors.length)], null);
 		world.addAtEmptyLocation(rock, depth);
 		return rock;
 	}
 	
 	public Item newVictoryItem(int depth) {
-		Item item = new Item("teddy bear", '*', SColor.BLUE);
+		Item item = new Item("teddy bear", '*', SColor.BLUE, null);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newBread(int depth) {
-		Item item = new Item("bread", '%', SColor.YELLOW);
+		Item item = new Item("bread", '%', SColor.YELLOW, null);
 		item.modifyFoodValue(200);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newFruit(int depth) {
-		Item item = new Item("apple", '%', SColor.RED_PIGMENT);
+		Item item = new Item("apple", '%', SColor.RED_PIGMENT, null);
 		item.modifyFoodValue(100);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newDagger(int depth) {
-		Item item = new Item("dagger", ')', SColor.LIGHT_BLUE);
+		Item item = new Item("dagger", ')', SColor.LIGHT_BLUE, null);
 		item.modifyAttackValue(5);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newSword(int depth) {
-		Item item = new Item("sword", ')', SColor.LIGHT_GRAY);
+		Item item = new Item("sword", ')', SColor.LIGHT_GRAY, null);
 		item.modifyAttackValue(10);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newStaff(int depth) {
-		Item item = new Item("staff", ')', SColor.YELLOW);
+		Item item = new Item("staff", ')', SColor.YELLOW, null);
 		item.modifyAttackValue(5);
 		item.modifyDefenseValue(3);
 		world.addAtEmptyLocation(item, depth);
@@ -141,7 +141,7 @@ public class EntityFactory {
 	}
 	
 	public Item newEdibleWeapon(int depth) {
-		Item item = new Item("baguette", ')', SColor.YELLOW);
+		Item item = new Item("baguette", ')', SColor.YELLOW, null);
 		item.modifyAttackValue(3);
 		item.modifyFoodValue(50);
 		world.addAtEmptyLocation(item, depth);
@@ -149,20 +149,20 @@ public class EntityFactory {
 	}
 	
 	public Item newLightArmor(int depth) {
-		Item item = new Item("tunic", '[', SColor.GREEN);
+		Item item = new Item("tunic", '[', SColor.GREEN, null);
 		item.modifyDefenseValue(2);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newMediumArmor(int depth) {
-		Item item = new Item("chainmail", '[', SColor.LIGHT_GRAY);
+		Item item = new Item("chainmail", '[', SColor.LIGHT_GRAY, null);
 		item.modifyDefenseValue(4);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	public Item newHeavyArmor(int depth) {
-		Item item = new Item("platemail", '[', SColor.GRAY_ASPARAGUS);
+		Item item = new Item("platemail", '[', SColor.GRAY_ASPARAGUS, null);
 		item.modifyDefenseValue(6);
 		world.addAtEmptyLocation(item, depth);
 		return item;

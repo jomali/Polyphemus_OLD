@@ -59,12 +59,9 @@ import jomali.polyphemus.geography.World;
  * TODO: Queda la posibilidad de annadir un color de fondo a las criaturas 
  * para incrementar su diversidad y/o diferenciacion.
  */
-public class Creature {
+public class Creature extends Entity {
 	
 	private World world;
-	private String name;
-	private char glyph;
-	private Color color;
 	private CreatureAi ai;
 	private Inventory inventory;
 	
@@ -92,12 +89,10 @@ public class Creature {
 	public int y;
 	public int z;
 	
-	public Creature(World world, String name, char glyph, Color color, 
-			int maxHp, int attack, int defense) {
+	public Creature(String name, char glyph, Color foregroundColor, Color backgroundColor, 
+			World world, int maxHp, int attack, int defense) {
+		super(name, glyph, foregroundColor, backgroundColor);
 		this.world			= world;
-		this.name			= name;
-		this.glyph			= glyph;
-		this.color			= color;
 		this.maxHp			= maxHp;
 		this.hp				= maxHp;
 		// TODO: Estos son los atributos que son proclives a ser modificados. 
@@ -111,15 +106,9 @@ public class Creature {
 	}
 	
 	public void setCreatureAi(CreatureAi ai) { this.ai = ai; }
-	
+		
 	////////////////////////////////////////////////////////////////////////////
 	// Metodos para acceder a los atributos:
-	
-	public String name() { return name; }
-	
-	public char glyph() { return glyph; }
-	
-	public Color color() { return color; }
 		
 	public Inventory inventory() { return inventory; }
 	
@@ -174,7 +163,7 @@ public class Creature {
 	}
 	
 	private void leaveCorpse() {
-		Item corpse = new Item( name + " corpse", '%', color.darker());
+		Item corpse = new Item(name() + " corpse", '%', foregroundColor().darker(), null);
 		corpse.modifyFoodValue(maxHp);
 		world.addAtEmptySpace(corpse, x, y, z);
 	}
@@ -256,7 +245,7 @@ public class Creature {
 		
 		amount = (int)(Math.random() * amount) + 1;
 		
-		doAction("attack the %s for %d damage", other.name, amount);
+		doAction("attack the %s for %d damage", other.name(), amount);
 		
 		other.modifyHp(-amount);
 	}
@@ -285,7 +274,7 @@ public class Creature {
 				if (other == this)
 					other.notify("You " + message + ".", params);
 				else if (other.canSee(x, y, z))
-					other.notify(String.format("The %s %s.", name, makeSecondPerson(message)), params);
+					other.notify(String.format("The %s %s.", name(), makeSecondPerson(message)), params);
 			}
 		}
 	}
@@ -326,7 +315,7 @@ public class Creature {
 	}
 	
 	public boolean isPlayer(){
-		return glyph == '@';
+		return glyph() == '@';
 	}
 	
 	public void eat(Item item){

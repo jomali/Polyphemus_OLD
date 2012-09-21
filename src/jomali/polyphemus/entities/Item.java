@@ -29,28 +29,16 @@ import java.awt.Color;
  * TODO: Queda la posibilidad de annadir un color de fondo a las criaturas 
  * para incrementar su diversidad y/o diferenciacion.
  */
-public class Item {
-	
-	private String name;
-	private char glyph;
-	private Color color;
+public class Item extends Entity {
 	
 	// TODO:
 	private int attackValue;
 	private int defenseValue;
 	private int foodValue;
 	
-	public Item(String name, char glyph, Color color) {
-		this.name		= name;
-		this.glyph		= glyph;
-		this.color		= color;
+	public Item(String name, char glyph, Color foregroundColor, Color backgroundColor) {
+		super(name, glyph, foregroundColor, backgroundColor);
 	}
-	
-	public String name() { return name; }
-	
-	public char glyph() { return glyph; }
-	
-	public Color color() { return color; }
 		
 	public int attackValue() { return attackValue; }
 	

@@ -98,11 +98,18 @@ public class World {
 		return tile(x, y, z).glyph();
 	}
 	
-	public Color color(int x, int y, int z) {
+	public Color foregroundColor(int x, int y, int z) {
 		Creature creature = creature(x, y, z);
-		if (creature != null) return creature.color();
-		if (item(x, y, z) != null) return item(x, y, z).color();
-		return tile(x, y, z).color();
+		if (creature != null) return creature.foregroundColor();
+		if (item(x, y, z) != null) return item(x, y, z).foregroundColor();
+		return tile(x, y, z).foregroundColor();
+	}
+	
+	public Color backgroundColor(int x, int y, int z) {
+		Creature creature = creature(x, y, z);
+		if (creature != null) return creature.backgroundColor();
+		if (item(x, y, z) != null) return item(x, y, z).backgroundColor();
+		return tile(x, y, z).backgroundColor();
 	}
 	
 	/////////////////////////////////////////////////:///////////////////////////

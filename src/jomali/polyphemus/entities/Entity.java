@@ -17,39 +17,37 @@
  * posibles problemas de compatibilidad entre diferentes computadoras.
  */
 
-package jomali.polyphemus.geography;
+package jomali.polyphemus.entities;
 
 import java.awt.Color;
 
-import jomali.polyphemus.util.SColor;
-
 /**
  * 
- * @author Trystan Spangler
  * @author J. Francisco Martin
  *
  */
-public enum Tile {
+public abstract class Entity {
 	
-	FLOOR		('.', SColor.LIGHT_GRAY, null),
-	DIRT		('#', SColor.LIGHT_GRAY, null),
-	STONE		('^', SColor.SLATE_GRAY, null),
+	private static int nextId = 0;
 	
-	STAIRS_DOWN	('>', Color.WHITE, null),
-	STAIRS_UP	('<', Color.WHITE, null),
-	
-	BOUNDS		('x', Color.BLACK, null),
-	UNKNOWN		(' ', Color.WHITE, null);
-	
+	private int id;
+	private String name;
 	private char glyph;
 	private Color foregroundColor;
 	private Color backgroundColor;
 	
-	Tile(char glyph, Color foregroundColor, Color backgroundColor) {
+	public Entity(String name, char glyph, Color foregroundColor, Color backgroundColor) {
+		this.id					= nextId;
+		nextId++;
+		this.name				= name;
 		this.glyph				= glyph;
 		this.foregroundColor	= foregroundColor;
 		this.backgroundColor	= backgroundColor;
 	}
+	
+	public int id() { return id; }
+	
+	public String name() { return name; }
 	
 	public char glyph() { return glyph; }
 	
@@ -57,12 +55,12 @@ public enum Tile {
 	
 	public Color backgroundColor() { return backgroundColor; }
 	
-	public boolean isGround() {
-		return this != Tile.DIRT && this != Tile.STONE && this != Tile.BOUNDS;
+	public void setForegroundColor(Color foregroundColor) {
+		this.foregroundColor = foregroundColor;
 	}
 	
-	public boolean isDiggable() {
-		return this == Tile.DIRT;
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
 	}
 
 }

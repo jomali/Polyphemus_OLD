@@ -33,6 +33,10 @@ public class BatAi extends CreatureAi {
 		super(creature);
 	}
 	
+	// TODO: We could set up a system for dealing with different monster 
+	// speeds(*) but this is simple enough: bats move twice for every one of 
+	// your moves. Easy to implement, easy to understand.
+	// (*).- http://roguebasin.roguelikedevelopment.org/index.php/Articles#Time_management	
 	@Override
 	public void onUpdate() {
 		wander();

@@ -22,6 +22,7 @@ package jomali.polyphemus.entities.ais;
 import jomali.polyphemus.entities.Creature;
 import jomali.polyphemus.entities.CreatureAi;
 import jomali.polyphemus.entities.EntityFactory;
+import jomali.polyphemus.util.SColor;
 
 /**
  * 
@@ -32,17 +33,21 @@ import jomali.polyphemus.entities.EntityFactory;
 public class FungusAi extends CreatureAi {
 	
 	private EntityFactory factory;
+	private int spreadcountLimit;
 	private int spreadcount;
 	
-	public FungusAi(Creature creature, EntityFactory factory) {
+	public FungusAi(Creature creature, int spreadcountLimit, EntityFactory factory) {
 		super(creature);
-		this.factory = factory;
+		this.spreadcountLimit	= spreadcountLimit;
+		this.spreadcount		= 0;
+		this.factory			= factory;
 	}
 	
 	@Override
 	public void onUpdate() {
-		if (spreadcount < 5 && Math.random() < 0.01) 
+		if ((spreadcount < spreadcountLimit) && (Math.random() < 0.01)) {
 			spread();
+		}
 	}
 	
 	private void spread() {
@@ -56,6 +61,10 @@ public class FungusAi extends CreatureAi {
 		child.y = y;
 		child.z = creature.z;
 		spreadcount++;
+		if (spreadcount >= spreadcountLimit) {
+			creature.doAction("dry up");
+			creature.setForegroundColor(SColor.CAMO_GREEN);
+		}
 	}
 
 }
