@@ -29,11 +29,23 @@ import jomali.polyphemus.util.RlTerminal;
  *
  */
 public class InventoryScreen implements Screen {
+	
+	////////////////////////////////////////////////////////////////////////////
+	
+	private void displayFrame(RlTerminal terminal) {
+		terminal.writeRow(RlTerminal.TL, 0);
+		terminal.writeRow(RlTerminal.BL, 0);
+		
+		terminal.writeCol(RlTerminal.TL, 0);
+		terminal.writeCol(RlTerminal.TR, 0);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void displayOutput(RlTerminal terminal) {
-		terminal.write(RlTerminal.TL, "Inventory screen", 0, 1);
-		terminal.write(RlTerminal.BC, "[ Press ENTER to exit ]", 0, 1);
+		terminal.cls();
+		displayFrame(terminal);
 	}
 
 	@Override

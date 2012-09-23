@@ -206,28 +206,12 @@ public class PlayScreen implements Screen {
 	}
 	
 	private void displayFrame(RlTerminal terminal) {
-/*
-		char horizontalFrame	= (char)205;
-		char verticalFrame		= (char)186;		
-		char topLeftCorner		= (char)201;
-		char topRightCorner		= (char)187;
-		char topCenterCorner	= (char)203;
-		char bottomLeftCorner	= (char)200;
-		char bottomRightCorner	= (char)188;
-		char bottomCenterCorner	= (char)202;
-*/
-		char horizontalFrame	= (char)177; // 178
-		char verticalFrame		= (char)177; // 178
+		terminal.writeRow(RlTerminal.TL, 0);
+		terminal.writeRow(RlTerminal.BL, 0);
 		
-		for (int i=0; i<ApplicationMain.WIDTH; i++) {
-			terminal.write(RlTerminal.TL, horizontalFrame, i, 0);
-			terminal.write(RlTerminal.BL, horizontalFrame, i, 0);
-		}
-		for (int j=0; j<ApplicationMain.HEIGHT; j++) {
-			terminal.write(RlTerminal.TL, verticalFrame, 0, j);
-			terminal.write(RlTerminal.TR, verticalFrame, 0, j);
-			terminal.write(RlTerminal.TR, verticalFrame, statusPanel.width()+1, j);
-		}		
+		terminal.writeCol(RlTerminal.TL, 0);
+		terminal.writeCol(RlTerminal.TR, 0);
+		terminal.writeCol(RlTerminal.TR, statusPanel.width()+1);
 	}
 	
 	private String worldName() {

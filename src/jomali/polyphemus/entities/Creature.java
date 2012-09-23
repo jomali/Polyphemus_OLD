@@ -21,7 +21,9 @@ package jomali.polyphemus.entities;
 
 import java.awt.Color;
 
-import jomali.polyphemus.entities.items.Food;
+import jomali.polyphemus.entities.items.Attire;
+import jomali.polyphemus.entities.items.Consumable;
+import jomali.polyphemus.entities.items.Weapon;
 import jomali.polyphemus.geography.Tile;
 import jomali.polyphemus.geography.World;
 
@@ -82,8 +84,8 @@ public class Creature extends Entity {
 	// los valores de ataque o defensa que annaden los armas y las armaduras 
 	// equipadas a la criatura. 
 	// Ej: inventory.attackValue(), inventory.defenseValue()
-	private Item weapon;
-	private Item armor;
+	private Weapon weapon;
+	private Attire armor;
 	
 	// Atributos publicos:
 	public int x;
@@ -123,15 +125,13 @@ public class Creature extends Entity {
 	// return attackValue + inventory.attackValue();
 	public int attackValue() {
 		return attackValue
-				+ (weapon == null ? 0 : weapon.attackValue())
-				+ (armor == null ? 0 : armor.attackValue());
+				+ (weapon == null ? 0 : weapon.attackValue());
 	}
 	
 	// TODO: Tras modificar el inventario, el metodo podria quedar asi:
 	// return defenseValue + inventory.defenseValue();
 	public int defenseValue() {
 		return defenseValue
-				+ (weapon == null ? 0 : weapon.defenseValue())
 				+ (armor == null ? 0 : armor.defenseValue());
 	}
 	
@@ -164,7 +164,7 @@ public class Creature extends Entity {
 	}
 	
 	private void leaveCorpse() {
-		Item corpse = new Food(name() + " corpse", '%', foregroundColor().darker(), null);
+		Consumable corpse = new Consumable(name() + " corpse", '%', foregroundColor().darker(), null);
 		corpse.modifyFoodValue(maxHp);
 		world.addAtEmptySpace(corpse, x, y, z);
 	}
@@ -319,13 +319,13 @@ public class Creature extends Entity {
 		return glyph() == '@';
 	}
 	
-	public void eat(Item item){
-		if (item.foodValue() < 0)
+	public void eat(Consumable consumable){
+		if (consumable.foodValue() < 0)
 			notify("Gross!");
 		
-		modifyFood(item.foodValue());
-		inventory.remove(item);
-		unequip(item);
+		modifyFood(consumable.foodValue());
+		inventory.remove(consumable);
+		unequip(consumable);
 	}
 	
 	public void unequip(Item item){
@@ -342,6 +342,7 @@ public class Creature extends Entity {
 	}
 	
 	public void equip(Item item){
+/*
 		if (item.attackValue() == 0 && item.defenseValue() == 0)
 			return;
 		
@@ -354,6 +355,7 @@ public class Creature extends Entity {
 			doAction("put on a " + item.name());
 			armor = item;
 		}
+*/
 	}
 	
 	public Creature closestCreature() {

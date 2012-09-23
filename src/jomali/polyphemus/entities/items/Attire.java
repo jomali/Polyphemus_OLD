@@ -17,26 +17,36 @@
  * posibles problemas de compatibilidad entre diferentes computadoras.
  */
 
-package jomali.polyphemus.entities;
+package jomali.polyphemus.entities.items;
 
 import java.awt.Color;
 
+import jomali.polyphemus.entities.Item;
 
 /**
  * 
- * @author Trystan Spangler
  * @author J. Francisco Martin
- * 
+ *
  */
-public class Item extends Entity {
+public class Attire extends Item {
 	
-	public Item(String name, char glyph, Color foregroundColor, Color backgroundColor) {
+	private int defenseValue;
+	
+	public Attire(String name, char glyph, Color foregroundColor, Color backgroundColor, 
+			int defenseValue) {
 		super(name, glyph, foregroundColor, backgroundColor);
+		this.defenseValue = defenseValue;
 	}
 	
-	@Override
-	public int compareTo(Entity other) {
-		return this.name().toLowerCase().compareTo(other.name().toLowerCase());		
+	public Attire(String name, char glyph, Color foregroundColor, Color backgroundColor) {
+		super(name, glyph, foregroundColor, backgroundColor);
+		this.defenseValue = 0;
 	}
+	
+	public int defenseValue() { return defenseValue; }
+	
+	public void setDefenseValue(int defenseValue) { this.defenseValue = defenseValue; }
+	
+	public void modifyDefenseValue(int amount) { defenseValue += amount; }
 
 }

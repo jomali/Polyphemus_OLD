@@ -120,4 +120,26 @@ public abstract class AsciiPanelAdequation extends AsciiPanel {
 		return c;
 	}
 	
+/*
+	char horizontalFrame	= (char)205;
+	char verticalFrame		= (char)186;		
+	char topLeftCorner		= (char)201;
+	char topRightCorner		= (char)187;
+	char topCenterCorner	= (char)203;
+	char bottomLeftCorner	= (char)200;
+	char bottomRightCorner	= (char)188;
+	char bottomCenterCorner	= (char)202;
+*/
+	
+	protected void writeRow(int y, Color foregroundColor, Color backgroundColor) {
+		for (int i=0; i<gridWidth(); i++) 
+			super.write((char)177, i, y, foregroundColor, backgroundColor);
+	}
+	
+	protected void writeCol(int x, Color foregroundColor, Color backgroundColor) {
+		for (int j=0; j<gridHeight(); j++) {
+			super.write((char)177, x, j, foregroundColor, backgroundColor);
+		}
+	}
+	
 }

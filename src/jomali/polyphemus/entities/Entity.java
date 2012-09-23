@@ -26,7 +26,7 @@ import java.awt.Color;
  * @author J. Francisco Martin
  *
  */
-public abstract class Entity {
+public abstract class Entity implements Comparable<Entity> {
 	
 	private static int nextId = 0;
 	
@@ -63,6 +63,10 @@ public abstract class Entity {
 		this.backgroundColor = backgroundColor;
 	}
 	
+	@Override
 	public String toString() { return id; }
+	
+	@Override
+	public int compareTo(Entity other) { return this.compareTo(other); }
 
 }

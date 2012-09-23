@@ -238,6 +238,32 @@ public class RlTerminal extends AsciiPanelAdequation {
 	public void cls() {
 		cls(' ', 0, 0, gridWidth(), gridHeight(), defaultForegroundColor(), defaultBackgroundColor()); }
 	
+	public void writeRow(int orientation, int y, Color foregroundColor, Color backgroundColor) {
+		// Establece el punto de inicio de escritura en el eje vertical:
+		switch (orientation / 3) { // 0.Top - 1.Bottom - 2.Middle
+		case 0: break;
+		case 1: y = (gridHeight() - 1) - y; break;
+		case 2: y = (gridHeight() / 2) + y; break;
+		}
+		super.writeRow(y, foregroundColor, backgroundColor);
+	}
+	public void writeRow(int orientation, int y) {
+		writeRow(orientation, y, defaultForegroundColor(), defaultBackgroundColor()); }
+
+	public void writeCol(int orientation, int x, Color foregroundColor, Color backgroundColor) {
+		// Establece el punto de inicio de escritura en el eje horizontal:
+		switch (orientation % 3) { // 0.Left - 1.Right - 2.Center
+		case 0: break;
+		case 1: x = (gridWidth() - 1) - x; break;
+		case 2: x = (gridWidth() / 2) + x; break;
+		}
+		super.writeCol(x, foregroundColor, backgroundColor);
+	}
+	public void writeCol(int orientation, int x) {
+		writeCol(orientation, x, defaultForegroundColor(), defaultBackgroundColor()); }
+	
+	
+	
 	
 	public void write(int orientation, String[] matrix, int x, int y, 
 			Color[] foregroundColors, Color[] backgroundColors) {

@@ -22,8 +22,8 @@ package jomali.polyphemus.entities;
 import java.awt.Color;
 
 import jomali.polyphemus.entities.Item;
-import jomali.polyphemus.entities.items.Armor;
-import jomali.polyphemus.entities.items.Food;
+import jomali.polyphemus.entities.items.Attire;
+import jomali.polyphemus.entities.items.Consumable;
 import jomali.polyphemus.entities.items.Weapon;
 import jomali.polyphemus.geography.World;
 import jomali.polyphemus.util.SColor;
@@ -79,14 +79,14 @@ public class ItemFactory {
 	}
 	
 	public Item newDagger(int depth) {
-		Item item = new Weapon("Dagger", ')', SColor.LIGHT_BLUE, null);
+		Weapon item = new Weapon("Dagger", ')', SColor.LIGHT_BLUE, null);
 		item.modifyAttackValue(2);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newShortSword(int depth) {
-		Item item = new Weapon("Short sword", ')', SColor.LIGHT_GRAY, null);
+		Weapon item = new Weapon("Short sword", ')', SColor.LIGHT_GRAY, null);
 		item.modifyAttackValue(4);
 		world.addAtEmptyLocation(item, depth);
 		return item;
@@ -107,21 +107,21 @@ public class ItemFactory {
 	}
 	
 	public Item newLeatherArmor(int depth) {
-		Item item = new Armor("Leather armor", '[', SColor.DARK_BROWN, null);
+		Attire item = new Attire("Leather armor", '[', SColor.DARK_BROWN, null);
 		item.modifyDefenseValue(2);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newHeavyArmor(int depth) {
-		Item item = new Armor("Heavy armor", '[', SColor.GRAY_ASPARAGUS, null);
+		Attire item = new Attire("Heavy armor", '[', SColor.GRAY_ASPARAGUS, null);
 		item.modifyDefenseValue(5);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newPlateArmor(int depth) {
-		Item item = new Armor("Plate armor", '[', SColor.LIGHT_BLUE_FLOWER, null);
+		Attire item = new Attire("Plate armor", '[', SColor.LIGHT_BLUE_FLOWER, null);
 		item.modifyDefenseValue(7);
 		world.addAtEmptyLocation(item, depth);
 		return item;
@@ -134,14 +134,14 @@ public class ItemFactory {
 	////////////////////////////////////////////////////////////////////////////
 
 	public Item newBlackMushroom(int depth) {
-		Item item = new Food("Black mushroom", '%', SColor.GRAPE_MOUSE, null);
+		Consumable item = new Consumable("Black mushroom", '%', SColor.GRAPE_MOUSE, null);
 		item.modifyFoodValue(50);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}
 	
 	public Item newWhiteMushroom(int depth) {
-		Item item = new Food("White mushroom", '%', SColor.WHEAT, null);
+		Consumable item = new Consumable("White mushroom", '%', SColor.WHEAT, null);
 		item.modifyFoodValue(50);
 		world.addAtEmptyLocation(item, depth);
 		return item;
