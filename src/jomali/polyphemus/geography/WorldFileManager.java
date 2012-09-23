@@ -45,7 +45,7 @@ public class WorldFileManager {
 			PrintWriter writer = new PrintWriter(file);
 			
 			writer.print(world.width()+ "x"+ world.height()+ "x"+ world.depth());
-			writer.println("@"+ world.name());			
+			writer.println("@"+ world.name());
 			for (int k=0; k<world.depth(); k++) {
 				for (int j=0; j<world.height(); j++) {
 					for (int i=0; i<world.width(); i++) {

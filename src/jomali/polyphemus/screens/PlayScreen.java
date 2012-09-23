@@ -26,8 +26,10 @@ import java.util.List;
 
 import jomali.polyphemus.ApplicationMain;
 import jomali.polyphemus.entities.Creature;
-import jomali.polyphemus.entities.EntityFactory;
+import jomali.polyphemus.entities.CreatureFactory;
 import jomali.polyphemus.entities.FieldOfView;
+import jomali.polyphemus.entities.Item;
+import jomali.polyphemus.entities.ItemFactory;
 import jomali.polyphemus.geography.World;
 import jomali.polyphemus.geography.WorldBuilder;
 import jomali.polyphemus.util.SColor;
@@ -160,15 +162,25 @@ public class PlayScreen implements Screen {
 		messages = new ArrayList<String>();
 		fov		 = new FieldOfView(world);
 		
-		EntityFactory factory = new EntityFactory(world);
-		createCreatures(factory);
-		createItems(factory);
+		createCreatures(new CreatureFactory(world));
+		createItems(new ItemFactory(world));
+		
+		for (int k=0; k<world.depth(); k++) {
+			for (int j=0; j<world.height(); j++) {
+				for (int i=0; i<world.width(); i++) {
+					Creature cr = world.creature(i, j, k);
+					Item it = world.item(i, j, k);
+					if (cr != null) System.out.println("Creature: "+ cr.id());
+					if (it != null) System.out.println("Item: "+ it.id());
+				}
+			}
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
 	// Metodos privados:
 	
-	private void createCreatures(EntityFactory factory) {
+	private void createCreatures(CreatureFactory factory) {
 		// Jugador
 		player = factory.newPlayer("Odysseus", '@', SColor.BLOOD, messages, fov);
 		for (int z=0; z<world.depth(); z++) {
@@ -179,14 +191,13 @@ public class PlayScreen implements Screen {
 		}
 	}
 	
-	private void createItems(EntityFactory factory) {
+	private void createItems(ItemFactory factory) {
 		for (int z=0; z<world.depth(); z++) {
 			for (int i=0; i<world.width()*world.height() / 20; i++) {
 				factory.newRock(z);
 			}
-			factory.newFruit(z);
-			factory.newEdibleWeapon(z);
-			factory.newBread(z);
+			factory.newBlackMushroom(z);
+			factory.newWhiteMushroom(z);
 			factory.randomArmor(z);
 			factory.randomWeapon(z);
 			factory.randomWeapon(z);

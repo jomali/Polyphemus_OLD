@@ -1,0 +1,30 @@
+
+<Nombre del personaje>
+<Profesión {Warrior, Magician, Thief, Barbarian,...}>
+<Raza {Human, Elf,...}>
+
+Level			:	#
+Experiencie		:	#
+
+Vitality		:	#	// Puntos de vida
+Physical		:	#	// Puntos de resistencia
+Psychic			:	#	// Puntos de magia
+Team Spirit		:	#	// Cohesión del grupo
+
+Skills:
+
+Lock-picking	:	#
+Perception		:	#
+First aid		:	#
+Arms 1 handed	:	#
+Arms 2 handed	:	#
+Throwing weapons:	#
+Shooting		:	#
+
+Characteristics:
+
+Strength		:	#
+Constitution	:	#
+Agility			:	#
+Intelligence	:	#
+Wisdom			:	#

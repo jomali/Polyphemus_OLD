@@ -80,7 +80,7 @@ public class ApplicationMain extends JFrame implements KeyListener {
 		// TODO: comprobar path del icono para que sea leído correctamente al 
 		// ejecutar la aplicación empaquetada como un .jar
 		setResizable(false);
-		setIconImage(kit.getImage("res/arda_icon.png"));
+		setIconImage(kit.getImage("res/arroba_icon02.png"));
 		setTitle(NAME+ " v."+ RELEASE);
 	}
 	

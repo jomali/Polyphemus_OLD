@@ -21,6 +21,7 @@ package jomali.polyphemus.entities;
 
 import java.awt.Color;
 
+import jomali.polyphemus.entities.items.Food;
 import jomali.polyphemus.geography.Tile;
 import jomali.polyphemus.geography.World;
 
@@ -163,7 +164,7 @@ public class Creature extends Entity {
 	}
 	
 	private void leaveCorpse() {
-		Item corpse = new Item(name() + " corpse", '%', foregroundColor().darker(), null);
+		Item corpse = new Food(name() + " corpse", '%', foregroundColor().darker(), null);
 		corpse.modifyFoodValue(maxHp);
 		world.addAtEmptySpace(corpse, x, y, z);
 	}

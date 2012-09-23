@@ -30,14 +30,14 @@ public abstract class Entity {
 	
 	private static int nextId = 0;
 	
-	private int id;
+	private String id;
 	private String name;
 	private char glyph;
 	private Color foregroundColor;
 	private Color backgroundColor;
 	
 	public Entity(String name, char glyph, Color foregroundColor, Color backgroundColor) {
-		this.id					= nextId;
+		this.id					= String.format("%s@%d", name, nextId);
 		nextId++;
 		this.name				= name;
 		this.glyph				= glyph;
@@ -45,7 +45,7 @@ public abstract class Entity {
 		this.backgroundColor	= backgroundColor;
 	}
 	
-	public int id() { return id; }
+	public String id() { return id; }
 	
 	public String name() { return name; }
 	
@@ -62,5 +62,7 @@ public abstract class Entity {
 	public void setBackgroundColor(Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
+	
+	public String toString() { return id; }
 
 }

@@ -19,6 +19,14 @@
 
 package jomali.polyphemus.entities;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+
+import jomali.polyphemus.entities.items.Armor;
+import jomali.polyphemus.entities.items.Food;
+import jomali.polyphemus.entities.items.Weapon;
+
 /**
  * TODO: Modificar la estructura de datos utilizada para la gestion del 
  * inventario en orden de facilitar su manejo y mejorar la eficiencia de sus 
@@ -30,40 +38,121 @@ package jomali.polyphemus.entities;
  */
 public class Inventory {
 	
-	private Item[] items;
+	private int weightCapacity;
+	private int weight;
 	
-	public Inventory(int max) {
-		items = new Item[max];
+	private List<Item> items;
+	private List<Item> weapons;
+	private List<Item> armors;
+	private List<Item> food;
+	private List<Item> miscellany;
+		
+	public Inventory(int weightCapacity) {
+		this.weightCapacity	= weightCapacity;
+		this.weight			= 0;
+		// Se inicializan las listas de objetos
+		this.items			= new LinkedList<Item>();
+		this.weapons		= new LinkedList<Item>();
+		this.armors			= new LinkedList<Item>();
+		this.food			= new LinkedList<Item>();
+		this.miscellany		= new LinkedList<Item>();		
 	}
 	
-	public Item[] getItems() { return items; }
+	////////////////////////////////////////////////////////////////////////////
+	// Metodos de acceso a objetos del inventario:
 	
-	public Item get(int i) { return items[i]; }
+	public List<Item> getItems() { return items; }
 	
-	public void add(Item item) {
-		for (int i=0; i<items.length; i++) {
-			if (items[i] == null) {
-				items[i] = item;
-				break;
-			}
+	public List<Item> getWeapons() { return weapons; }
+	
+	public List<Item> getArmors() { return armors; }
+	
+	public List<Item> getFood() { return food; }
+	
+	public List<Item> getMiscellany() { return miscellany; }
+	
+	public Item getItem(int index) { return items.get(index); }
+	
+	public Item getWeapon(int index) { return weapons.get(index); }
+	
+	public Item getArmor(int index) { return armors.get(index); }
+	
+	public Item getMiscellany(int index) { return miscellany.get(index); }
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Metodos para introducir objetos:
+	
+	/**
+	 * Introduce el elemento <code>item</code> en la posicion que le 
+	 * corresponda segun orden alfabetico en la lista <code>list</code>.
+	 * 
+	 * TODO: Eficiencia actual del algoritmo: O(n). Dado que la lista esta 
+	 * ordenada, se puede mejorar la eficiencia utilizando el algoritmo de 
+	 * busqueda binaria para dar con la posicion que le corresponde a 
+	 * <code>item</code> dentro de la lista.
+	 * 
+	 * @param list, lista a la que se desea annadir el elemento
+	 * @param item, elemento que se desea annadir a la lista
+	 * @return true si el elemento se annade a la lista correctamente, false 
+	 * 		en caso contrario
+	 */
+	private static boolean add(List<Item> list, Item item) {
+		ListIterator<Item> it = list.listIterator();
+		while (it.hasNext()) {
+			Item i = it.next();
+			if (i.compareTo(item) >= 0) { it.previous(); break; }
 		}
+		it.add(item);
+		return true;
 	}
+	
+	/**
+	 * TODO: Introducir los objetos en orden alfabetico.
+	 * @param item
+	 */
+	public void add(Item item) {
+		// Se introduce el objeto en la lista general
+										add(items,		item);
+		// Se introduce el objeto en su lista particular
+		if (item instanceof Weapon)		add(weapons,	item);
+		else if (item instanceof Armor)	add(armors,		item);
+		else if (item instanceof Food)	add(food,		item);
+		else							add(miscellany,	item);
+		
+		// TODO: Eliminar. Esta de prueba
+		display();
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Metodos para eliminar objetos:
 	
 	public void remove(Item item) {
-		for (int i=0; i<items.length; i++) {
-			if (items[i] == item) {
-				items[i] = null;
-				break;
-			}
-		}
+		// Se elimina el objeto de la lista general
+		items.remove(item);
+		// Se elimina el objeto de su lista particular
+		if (item instanceof Weapon)		weapons.remove(item);
+		else if (item instanceof Armor)	armors.remove(item);
+		else								miscellany.remove(item);
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	// Otros metodos de utilidad:
+	
 	public boolean isFull() {
-		int size = 0;
-		for (int i=0; i<items.length; i++) {
-			if (items[i] != null) size++;
-		}
-		return size == items.length;
+		return weight >= weightCapacity;
+	}
+	
+	private void display() {
+		System.out.println("ITEMS:");
+		for (Item i : items)		System.out.println("\t- "+ i);
+		System.out.println("WEAPONS:");
+		for (Item i : weapons)		System.out.println("\t- "+ i);
+		System.out.println("ARMORS:");
+		for (Item i : armors)		System.out.println("\t- "+ i);
+		System.out.println("FOOD:");
+		for (Item i : food)			System.out.println("\t- "+ i);
+		System.out.println("MISCELLANY:");
+		for (Item i : miscellany)	System.out.println("\t- "+ i);
 	}
 
 }

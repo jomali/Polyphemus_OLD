@@ -21,7 +21,7 @@ package jomali.polyphemus.entities.ais;
 
 import jomali.polyphemus.entities.Creature;
 import jomali.polyphemus.entities.CreatureAi;
-import jomali.polyphemus.entities.EntityFactory;
+import jomali.polyphemus.entities.CreatureFactory;
 import jomali.polyphemus.util.SColor;
 
 /**
@@ -32,11 +32,11 @@ import jomali.polyphemus.util.SColor;
  */
 public class FungusAi extends CreatureAi {
 	
-	private EntityFactory factory;
+	private CreatureFactory factory;
 	private int spreadcountLimit;
 	private int spreadcount;
 	
-	public FungusAi(Creature creature, int spreadcountLimit, EntityFactory factory) {
+	public FungusAi(Creature creature, int spreadcountLimit, CreatureFactory factory) {
 		super(creature);
 		this.spreadcountLimit	= spreadcountLimit;
 		this.spreadcount		= 0;

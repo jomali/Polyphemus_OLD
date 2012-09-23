@@ -21,15 +21,14 @@ package jomali.polyphemus.entities;
 
 import java.awt.Color;
 
+
 /**
  * 
  * @author Trystan Spangler
  * @author J. Francisco Martin
  * 
- * TODO: Queda la posibilidad de annadir un color de fondo a las criaturas 
- * para incrementar su diversidad y/o diferenciacion.
  */
-public class Item extends Entity {
+public class Item extends Entity implements Comparable<Item> {
 	
 	// TODO:
 	private int attackValue;
@@ -51,5 +50,10 @@ public class Item extends Entity {
 	public void modifyDefenseValue(int amount) { defenseValue += amount; }
 	
 	public void modifyFoodValue(int amount) { foodValue += amount; }
+	
+	@Override
+	public int compareTo(Item item) {
+		return this.name().toLowerCase().compareTo(item.name().toLowerCase());		
+	}
 
 }

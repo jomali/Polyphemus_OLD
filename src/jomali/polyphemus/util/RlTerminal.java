@@ -239,9 +239,6 @@ public class RlTerminal extends AsciiPanelAdequation {
 		cls(' ', 0, 0, gridWidth(), gridHeight(), defaultForegroundColor(), defaultBackgroundColor()); }
 	
 	
-	
-	
-	
 	public void write(int orientation, String[] matrix, int x, int y, 
 			Color[] foregroundColors, Color[] backgroundColors) {
 		// Establece el punto de inicio de escritura en el eje vertical:
