@@ -1,24 +1,26 @@
 === POLYPHEMUS ===
-	
-Un pequenno juego roguelike en Java por J. Francisco Martin. Creado a partir de 
-las notas de Trystan Spangler: 
-http://trystans.blogspot.com.es/search/label/roguelike%20tutorial
 
-NOTA: Se ha procurado suprimir todos los acentos a fin de evitar posibles 
-problemas de compatibilidad entre diferentes computadoras.
+Un sencillo juego roguelike en Java. Creado a partir de las notas de Trystan 
+Spangler: http://trystans.blogspot.com.es/search/label/roguelike%20tutorial
 
+Conduce a Odiseo hasta el ultimo nivel de la cueva y acaba con el famoso 
+ciclope Polifemo.
 
 INSTRUCCIONES: Pantalla de juego
-	
-	W/A/S/D	: Movimiento del personaje
-	E		: Accion principal
+
+	W/A/S/D/ teclas de direccion : Movimiento del personaje
+	E		: Accion principal (coger objetos, subir/bajar escaleras,...)
 	ESC		: Acceso al menu principal
 	I		: Acceso al menu de inventario
 	
-INSTRUCCIONES: Pantalla de inventario
-	
+INSTRUCCIONES: Pantalla de inventario (en desarrollo)
+
 	W/S		: Movimiento entre objetos
 	A/D		: Movimiento entre categorias
-	E		: Accion sobre objeto seleccionado
-	R		: Dejar objeto seleccionado
+	E		: Accion sobre el objeto seleccionado
+	R		: Soltar objeto seleccionado
 	ESC/I	: Volver a la pantalla de juego
+
+____________________
+NOTA: Se ha procurado suprimir todos los acentos a fin de evitar posibles 
+problemas de compatibilidad entre diferentes computadoras.
