@@ -21,8 +21,12 @@ package jomali.polyphemus.screens;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.List;
+import java.util.ListIterator;
 
 import jomali.polyphemus.entities.Creature;
+import jomali.polyphemus.entities.Inventory;
+import jomali.polyphemus.entities.Item;
 import jomali.polyphemus.util.RlTerminal;
 
 /**
@@ -32,13 +36,17 @@ import jomali.polyphemus.util.RlTerminal;
  */
 public class InventoryScreen implements Screen {
 	
-	private Creature creature;
+	private final String[] categoryNames = new String[] {
+			"All", "Weapons", "Apparel", "Consumables", "Readings", "Miscellany"
+	};
+	
+	private Inventory inventory;
 	private int category;
 	private int index;
 	private int cursor;
 	
 	public InventoryScreen(Creature creature) {
-		this.creature	= creature;
+		this.inventory	= creature.inventory();
 		this.category	= 0;
 		this.index		= 0;
 		this.cursor		= 0;
@@ -47,20 +55,30 @@ public class InventoryScreen implements Screen {
 	////////////////////////////////////////////////////////////////////////////
 	// Metodos para manipular la pantalla y el inventario:
 	
+	/**
+	 * Desplaza el puntero de la categoria de objetos en la cantidad 
+	 * <code>amount</code> indicada.
+	 * @param amount valor en que se desplaza al puntero de categoria
+	 */
 	private void moveCategory(int amount) {
-		if (category == 0 && amount < 0) {
-			category = creature.inventory().numberOfCategories()-1;
-			amount++;
-		}
-		category = (category + amount) % creature.inventory().numberOfCategories();
+		if (inventory.numberOfCategories() == 0) return;
+		if (category==0 && amount<0) category = inventory.numberOfCategories()+amount;
+		else category += amount;
+		category = category % inventory.numberOfCategories();
+		if (inventory.get(category).size() > 0 && index >= inventory.get(category).size()) 
+			index = inventory.get(category).size()-1;
 	}
 	
+	/**
+	 * Desplaza el puntero de la lista de objetos en la cantidad 
+	 * <code>amount</code> indicada.
+	 * @param amount valor en que se desplaza al puntero de lista
+	 */
 	private void moveIndex(int amount) {
-		if (index == 0 && amount < 0) {
-			index = creature.inventory().size()-1;
-			amount++;
-		}
-		index = (index + amount) % creature.inventory().size();
+		if (inventory.get(category).size() == 0) return;
+		if (index==0 && amount<0) index = inventory.get(category).size()+amount;
+		else index += amount;
+		index = index % inventory.get(category).size();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -74,17 +92,29 @@ public class InventoryScreen implements Screen {
 		terminal.writeCol(RlTerminal.TR, 0);
 		
 		terminal.write(RlTerminal.TL, " INVENTORY ", 2, 0, Color.BLACK, Color.WHITE);
-		terminal.write(RlTerminal.BR, " @s[esc]@n exit ", 2, 0, Color.BLACK, Color.WHITE);
+		terminal.write(RlTerminal.BR, " @h[esc]@r exit ", 2, 0, Color.BLACK, Color.WHITE);
 	}
 	
 	private void displayCategories(RlTerminal terminal, int xOffset, int yOffset) {
-		String cat = (category+1)+ " / "+ (creature.inventory().numberOfCategories());
-		terminal.write(RlTerminal.TL, cat, xOffset, yOffset);
+		String str;
+		if (inventory.numberOfCategories() == 0)  str = " No categories to display ";
+		else str = " "+ category+ " / "+ (inventory.numberOfCategories()-1)+ " ";
+		str += "- "+ categoryNames[category]+ " ";
+		terminal.write(RlTerminal.TL, str, xOffset, yOffset, Color.BLACK, Color.WHITE);
 	}
 	
 	private void displayItems(RlTerminal terminal, int xOffset, int yOffset) {
-		String it = (index+1)+ " / "+ (creature.inventory().size());
-		terminal.write(RlTerminal.TL, it, xOffset, yOffset);
+		String str;
+		if (inventory.get(category).size() == 0) str = "No items to display.";
+		else str = index+ " / "+ (inventory.get(category).size()-1);
+		terminal.write(RlTerminal.TL, str, xOffset, yOffset);
+		
+		ListIterator<Item> it = inventory.get(category).listIterator();
+		int i = 0;
+		while (it.hasNext()) {
+			terminal.write(RlTerminal.TL, it.next().name(), 4, 6+i);
+			i++;
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -111,6 +141,7 @@ public class InventoryScreen implements Screen {
 		case KeyEvent.VK_DOWN:
 		case KeyEvent.VK_S:			moveIndex( 1); break;
 		// Salir de la pantalla:
+		case KeyEvent.VK_I:
 		case KeyEvent.VK_ESCAPE:	return null;
 		}
 		

@@ -1,24 +1,6 @@
-/* POLYPHEMUS - un sencillo juego roguelike en Java
- * Copyright © 2012 J. Francisco Martin 
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * 
- * NOTA: Se ha procurado suprimir todos los acentos a fin de evitar 
- * posibles problemas de compatibilidad entre diferentes computadoras.
- */
-
 package jomali.polyphemus.entities;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -29,9 +11,6 @@ import jomali.polyphemus.entities.items.Readable;
 import jomali.polyphemus.entities.items.Weapon;
 
 /**
- * TODO: Modificar la estructura de datos utilizada para la gestion del 
- * inventario en orden de facilitar su manejo y mejorar la eficiencia de sus 
- * operaciones.
  * 
  * @author Trystan Spangler
  * @author J. Francisco Martin
@@ -39,45 +18,39 @@ import jomali.polyphemus.entities.items.Weapon;
  */
 public class Inventory {
 	
-	private int capacity;	// Capacidad del inv. (en peso, # uds., u otros)
-	private int counter;	
+	private static final int ALL			= 0;
+	private static final int WEAPONS		= 1;
+	private static final int APPAREL		= 2;
+	private static final int CONSUMABLES	= 3;
+	private static final int READINGS		= 4;
+	private static final int MISCELLANY	= 5;
 	
-	private List<Item> items;
-	private List<Item> weapons;
-	private List<Item> apparel;
-	private List<Item> consumables;
-	private List<Item> readings;
-	private List<Item> miscellany;
-		
+	private int capacity;
+	private int counter;
+	private List<List<Item>> items;
+	
 	public Inventory(int capacity) {
-		this.capacity		= capacity;
-		this.counter		= 0;
-		// Se inicializan las listas de objetos
-		this.items			= new LinkedList<Item>();
-		this.weapons		= new LinkedList<Item>();
-		this.apparel		= new LinkedList<Item>();
-		this.consumables	= new LinkedList<Item>();
-		this.readings		= new LinkedList<Item>();
-		this.miscellany		= new LinkedList<Item>();	
+		this.capacity	= capacity;
+		this.counter	= 0;
+		this.items		= new ArrayList<List<Item>>();
+		// Se annaden las listas de objetos
+		items.add(ALL,			new LinkedList<Item>());
+		items.add(WEAPONS,		new LinkedList<Item>());
+		items.add(APPAREL,		new LinkedList<Item>());
+		items.add(CONSUMABLES,	new LinkedList<Item>());
+		items.add(READINGS,		new LinkedList<Item>());
+		items.add(MISCELLANY,	new LinkedList<Item>());
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
-	// Metodos de acceso a las listas del inventario:
 	
-	public List<Item> getItems() { return items; }
-	
-	public List<Item> getWeapons() { return weapons; }
-	
-	public List<Item> getApparel() { return apparel; }
-	
-	public List<Item> getConsumables() { return consumables; }
-	
-	public List<Item> getReadings() { return readings; }
-	
-	public List<Item> getMiscellany() { return miscellany; }
-	
-	////////////////////////////////////////////////////////////////////////////
-	// Metodos para introducir objetos:
+	private int category(Item item) {
+		if (item instanceof Weapon)			return WEAPONS;
+		else if (item instanceof Attire)		return APPAREL;
+		else if (item instanceof Consumable)	return CONSUMABLES;
+		else if (item instanceof Readable)	return READINGS;
+		else									return MISCELLANY;
+	}
 	
 	/**
 	 * Introduce el elemento <code>item</code> en la posicion que le 
@@ -86,18 +59,18 @@ public class Inventory {
 	 * <p>En el peor de los casos --la posicion del nuevo elemento se encuentra 
 	 * al final de la lista--, se tienen que recorrer todos los elementos antes 
 	 * de introducir el nuevo. Hay algoritmos de busqueda en listas ordenadas, 
-	 * como el de busqueda binaria, que en otras circunstancias podrian 
-	 * permitir dar con la posicion del nuevo elemento sin tener que recorrer 
-	 * la lista por completo. Sin embargo, el inventario utiliza estructuras 
-	 * <code>LinkedList</code> para las listas de objetos, en las que para 
-	 * acceder a un elemento n antes hay que recorrer todos los elementos 
-	 * anteriores a el, de forma que utilizar uno de estos algoritmos no 
-	 * supondria una mejora de eficiencia (posiblemente al contrario).
+	 * como el de busqueda binaria, que en otras circunstancias podrian dar con 
+	 * la posicion del nuevo elemento sin tener que recorrer la lista por 
+	 * completo. Sin embargo, el inventario utiliza listas de acceso secuencial 
+	 * para almacenar los objetos en las que para acceder a un elemento 
+	 * <i>n</i> antes hay que recorrer todos los elementos <i>(0, n-1)</i> 
+	 * anteriores a el, de forma que utilizar uno de estos algoritmos de 
+	 * busqueda no supondria una mejora de eficiencia (posiblemente al 
+	 * contrario).
 	 * 
-	 * @param list, lista a la que se desea annadir el elemento
+	 * @param list, lista en la que se desea annadir el nuevo elemento
 	 * @param item, elemento que se desea annadir a la lista
-	 * @return true si el elemento se annade a la lista correctamente, false 
-	 * 		en caso contrario
+	 * @return true al annadir el elemento a la lista correctamente
 	 */
 	private static boolean add(List<Item> list, Item item) {
 		ListIterator<Item> it = list.listIterator();
@@ -109,6 +82,29 @@ public class Inventory {
 		return true;
 	}
 	
+	////////////////////////////////////////////////////////////////////////////
+	
+	public int numberOfCategories() {
+		return items.size();
+	}
+	
+	public int size() {
+		return counter;
+	}
+	
+	/**
+	 * Indica si el inventario esta lleno.
+	 * @return true si el inventario esta lleno, false en caso contrario
+	 */
+	public boolean isFull() {
+		if (capacity < 0) return false; // capacity = -1: capacidad ilimitada
+		return counter >= capacity;
+	}
+	
+	public List<Item> get(int category) {
+		return items.get(category);
+	}
+	
 	/**
 	 * Introduce el elemento <code>item</code> en el inventario.
 	 * @param item, elemento a annadir al inventario
@@ -116,52 +112,27 @@ public class Inventory {
 	public void add(Item item) {
 		if (isFull()) return;
 		counter ++;
-		// Se introduce el objeto en la lista general
-											 add(items,			item);
-		// Se introduce el objeto en su lista particular
-		if (item instanceof Weapon)			 add(weapons,		item);
-		else if (item instanceof Attire)	 add(apparel,		item);
-		else if (item instanceof Consumable) add(consumables,	item);
-		else if (item instanceof Readable)	 add(readings,		item);
-		else								 add(miscellany,	item);
-		
-		// TODO: Eliminar. Esta de prueba
+		// Se introduce el objeto en la lista general:
+		add(items.get(ALL), item);
+		// Se introduce el objeto en su lista particular:
+		add(items.get(category(item)), item);
+		// TODO
 		display();
 	}
 	
-	////////////////////////////////////////////////////////////////////////////
-	// Metodos para eliminar objetos:
-	
 	public void remove(Item item) {
-		// TODO: Implementar
+		// TODO ...
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
-	// Otros metodos de utilidad:
 	
-	public boolean isFull() {
-		if (capacity < 0) return false;
-		return counter >= capacity;
-	}
+	// TODO: Metodos de prueba. (Eliminar)
 	
-	
-	
-	
-	
-	// TODO: eliminar
 	private void display() {
-		System.out.println("ITEMS:");
-		for (Item i : items)		System.out.println("\t- "+ i);
-		System.out.println("WEAPONS:");
-		for (Item i : weapons)		System.out.println("\t- "+ i);
-		System.out.println("APPAREL:");
-		for (Item i : apparel)		System.out.println("\t- "+ i);
-		System.out.println("CONSUMABLES:");
-		for (Item i : consumables)	System.out.println("\t- "+ i);
-		System.out.println("READINGS:");
-		for (Item i : readings)		System.out.println("\t- "+ i);
-		System.out.println("MISCELLANY:");
-		for (Item i : miscellany)	System.out.println("\t- "+ i);
+		for (int i=0; i<items.size(); i++) {
+			System.out.println(i+ ".-");
+			for (Item item : items.get(i)) System.out.println("\t- "+ item);
+		}
 	}
 
 }

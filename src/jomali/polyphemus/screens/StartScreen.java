@@ -49,14 +49,13 @@ public class StartScreen implements Screen {
 				"--it was not far away--",
 				"there on the shore beside the sea",
 				"we saw a high CAVE overarched with bay-trees.\"",
+				"", 
 				"Homer, Odyssey 9.187 - 542",
 		};
 		
 		terminal.write(RlTerminal.TC, title, 0, 1);
 		terminal.write(RlTerminal.MC, introduction, 0, 0, SColor.BLOOD);
-		// TODO: Metodos para colorear palabras independientes dentro de una 
-		// cadena (para poder resaltar ENTER, por ejemplo).
-		terminal.write(RlTerminal.BC, "[ Press @sENTER@n to continue ]", 0, 1);
+		terminal.write(RlTerminal.BC, "[ Press @hENTER@r to continue ]", 0, 1);
 		
 	}
 	

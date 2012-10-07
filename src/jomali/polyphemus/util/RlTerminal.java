@@ -54,8 +54,8 @@ public class RlTerminal extends AsciiPanelAdequation {
 	public static final int MR	= 7;
 	public static final int MC	= 8;
 	
-	private Color cstyleFgColor;
-	private Color cstyleBgColor;
+	private Color highlightedFG;
+	private Color highlightedBG;
 	
 	/**
 	 * Constructor. Crea una nueva terminal <code>RlTerminal</code> con las 
@@ -99,19 +99,19 @@ public class RlTerminal extends AsciiPanelAdequation {
 	}
 	
 	/**
-	 * Establece el color frontal del estilo personalizado.
-	 * @param cstyleFgColor color frontal del estilo personalizado
+	 * Establece el color frontal para textos destacados.
+	 * @param highlightedFG color frontal para textos destacados
 	 */
-	public void setCstyleFgColor(Color cstyleFgColor) {
-		this.cstyleFgColor = cstyleFgColor;
+	public void setHighlightedFG(Color highlightedFG) {
+		this.highlightedFG = highlightedFG;
 	}
 	
 	/**
-	 * Establece el color de fondo del estilo personalizado.
-	 * @param cstyleBgColor color de fondo del estilo personalizado
+	 * Establece el color de fondo para textos destacados.
+	 * @param highlightedBG color de fondo para textos destacados
 	 */
-	public void setCstyleBgColor(Color cstyleBgColor) {
-		this.cstyleBgColor = cstyleBgColor;
+	public void setHighlightedBG(Color highlightedBG) {
+		this.highlightedBG = highlightedBG;
 	}
 	
 	/**
@@ -209,14 +209,23 @@ public class RlTerminal extends AsciiPanelAdequation {
 		Color fgColor = foregroundColor;
 		Color bgColor = backgroundColor;
 		for (int i=0; i<text.length(); i++) {
+			
+			/*
+			 * Detecta secuencias de estilo en la cadena de texto. Actualmente, 
+			 * las secuencias de estilo posibles son tres: 
+			 * 		@r - estilo regular
+			 * 		@h - estilo destacado
+			 * 		@i - estilo invertido
+			 */
+			
 			if (text.charAt(i) == '@' && text.length() > i+1) {
-				if (text.charAt(i+1) == 'n') {
+				if (text.charAt(i+1) == 'r') {
 					fgColor = foregroundColor;
 					bgColor = backgroundColor;
 				}
-				if (text.charAt(i+1) == 's') {
-					fgColor = cstyleFgColor == null ? foregroundColor : cstyleFgColor;
-					bgColor = cstyleBgColor == null ? backgroundColor : cstyleBgColor;
+				if (text.charAt(i+1) == 'h') {
+					fgColor = highlightedFG == null ? foregroundColor : highlightedFG;
+					bgColor = highlightedBG == null ? backgroundColor : highlightedBG;
 				}
 				if (text.charAt(i+1) == 'i') {
 					fgColor = backgroundColor;

@@ -25,9 +25,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
-import jomali.polyphemus.screens.Screen;
-import jomali.polyphemus.screens.StartScreen;
+// TODO: importar exclusivamente las clases necesarias
+import jomali.polyphemus.screens.*;
 import jomali.polyphemus.util.RlTerminal;
+import jomali.polyphemus.util.SColor;
 
 /**
  * Implementa el metodo principal que lanza la aplicacion.
@@ -89,16 +90,17 @@ public class ApplicationMain extends JFrame implements KeyListener {
 	 */
 	@Override
 	public void repaint() {
-		// Se calcula el tiempo que tarda la operacion en realizarse a fin de 
-		// poder evaluar el rendimiento de la terminal
-		long tInicio = System.currentTimeMillis();
+		// TODO: Se calcula el tiempo que tarda la operacion en realizarse a 
+		// fin de poder evaluar el rendimiento de la terminal.
+//		long tInicio = System.currentTimeMillis();
 		
 		terminal.clear(); // TODO: implementar metodo adecuado en RlTerminal
 		screen.displayOutput(terminal);
 		super.repaint();
 		
-		long tFin = System.currentTimeMillis();
-		System.out.println("Tiempo repintado: "+ (tFin - tInicio)+ "ms.");
+		// TODO: Eliminar al terminar pruebas.
+//		long tFin = System.currentTimeMillis();
+//		System.out.println("Tiempo repintado: "+ (tFin - tInicio)+ "ms.");
 	}
 	
 	/**

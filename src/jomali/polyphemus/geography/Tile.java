@@ -31,7 +31,7 @@ import jomali.polyphemus.util.SColor;
  */
 public enum Tile {
 	
-	FLOOR		('.', SColor.LIGHT_GRAY, null),
+	FLOOR		('·', SColor.LIGHT_GRAY, null),
 	DIRT		('#', SColor.LIGHT_GRAY, null),
 	STONE		('^', SColor.SLATE_GRAY, null),
 	

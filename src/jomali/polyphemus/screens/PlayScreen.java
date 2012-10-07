@@ -73,7 +73,10 @@ public class PlayScreen implements Screen {
 		private void displayMessages(RlTerminal terminal, List<String> messages) {
 			int top = (height()+yOffset()) - messages.size();
 			for (int i=0; i<messages.size(); i++) {
-				terminal.write(RlTerminal.TL, messages.get(i), xOffset()+1, top+i);
+//				terminal.write(RlTerminal.TL, messages.get(i), xOffset()+1, top+i);
+				// TODO:
+				terminal.write(RlTerminal.TL, " "+ messages.get(i)+ " ", 
+						xOffset()+1, top+i+1, Color.BLACK, Color.WHITE);
 			}
 			// TODO: Antes de limipiar la lista, los mensajes podrían copiarse a 
 			// otra lista independiente (o una lista de listas) de forma que se 
@@ -165,16 +168,18 @@ public class PlayScreen implements Screen {
 		createCreatures(new CreatureFactory(world));
 		createItems(new ItemFactory(world));
 		
-		for (int k=0; k<world.depth(); k++) {
-			for (int j=0; j<world.height(); j++) {
-				for (int i=0; i<world.width(); i++) {
-					Creature cr = world.creature(i, j, k);
-					Item it = world.item(i, j, k);
-					if (cr != null) System.out.println("Creature: "+ cr.id());
-					if (it != null) System.out.println("Item: "+ it.id());
-				}
-			}
-		}
+		// TODO: Eliminar al finalizar pruebas:
+//		for (int k=0; k<world.depth(); k++) {
+//			for (int j=0; j<world.height(); j++) {
+//				for (int i=0; i<world.width(); i++) {
+//					Creature cr = world.creature(i, j, k);
+//					Item it = world.item(i, j, k);
+//					if (cr != null) System.out.println("Creature: "+ cr.id());
+//					if (it != null) System.out.println("Item: "+ it.id());
+//				}
+//			}
+//		}
+		
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
