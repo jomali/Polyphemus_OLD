@@ -56,7 +56,7 @@ public class StartScreen implements Screen {
 		terminal.write(RlTerminal.MC, introduction, 0, 0, SColor.BLOOD);
 		// TODO: Metodos para colorear palabras independientes dentro de una 
 		// cadena (para poder resaltar ENTER, por ejemplo).
-		terminal.write(RlTerminal.BC, "[ Press ENTER to continue ]", 0, 1);
+		terminal.write(RlTerminal.BC, "[ Press @sENTER@n to continue ]", 0, 1);
 		
 	}
 	

@@ -19,6 +19,7 @@
 
 package jomali.polyphemus.screens;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import jomali.polyphemus.util.RlTerminal;
@@ -29,16 +30,32 @@ import jomali.polyphemus.util.RlTerminal;
  *
  */
 public class LogScreen implements Screen {
+	
+	////////////////////////////////////////////////////////////////////////////
+	
+	private void displayFrame(RlTerminal terminal) {
+		terminal.writeRow(RlTerminal.TL, 0);
+		terminal.writeRow(RlTerminal.BL, 0);
+		
+		terminal.writeCol(RlTerminal.TL, 0);
+		terminal.writeCol(RlTerminal.TR, 0);
+		
+		terminal.write(RlTerminal.TL, " HISTORY ", 2, 0, Color.BLACK, Color.WHITE);
+		terminal.write(RlTerminal.BR, " [esc] exit ", 2, 0, Color.BLACK, Color.WHITE);
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	public void displayOutput(RlTerminal terminal) {
-		terminal.write(RlTerminal.TL, "Log screen", 0, 1);
-		terminal.write(RlTerminal.BC, "[ Press ENTER to exit ]", 0, 1);
+		terminal.cls();
+		displayFrame(terminal);		
 	}
 
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
-		return key.getKeyCode() == KeyEvent.VK_ENTER ? null : this;
+		return (key.getKeyCode() == KeyEvent.VK_L ||
+				 key.getKeyCode() == KeyEvent.VK_ESCAPE) ? null : this;		
 	}
 	
 }

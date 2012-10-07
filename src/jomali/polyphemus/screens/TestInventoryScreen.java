@@ -29,7 +29,7 @@ import jomali.polyphemus.util.RlTerminal;
  * @author J. Francisco Martin
  *
  */
-public class MainMenuScreen implements Screen {
+public class TestInventoryScreen implements Screen {
 	
 	////////////////////////////////////////////////////////////////////////////
 	
@@ -39,9 +39,31 @@ public class MainMenuScreen implements Screen {
 		
 		terminal.writeCol(RlTerminal.TL, 0);
 		terminal.writeCol(RlTerminal.TR, 0);
-		
-		terminal.write(RlTerminal.TL, " MAIN MENU ", 2, 0, Color.BLACK, Color.WHITE);
-		terminal.write(RlTerminal.BR, " [esc] exit ", 2, 0, Color.BLACK, Color.WHITE);
+	}
+	
+	private void showCategories(RlTerminal terminal, int xOffset, int yOffset) {
+		String categories = "| ALL | WEAPONS | ATTIRE | CONSUMABLES | READINGS | MISCELLANY |";
+		terminal.write(RlTerminal.TL, categories, xOffset, yOffset, Color.BLACK, Color.WHITE);
+	}
+	
+	private void showObjects(RlTerminal terminal, int xOffset, int yOffset) {
+		String[] objects = new String[] {
+				"Object 1", 
+				"Object 2", 
+				"Object 3", 
+				"Object 4", 
+				"Object 5",
+		};
+		Color[] foregroundColors = new Color[] {
+				Color.GRAY, 
+				Color.GRAY,
+				Color.WHITE, 
+				Color.GRAY, 
+				Color.GRAY, 
+		};
+		for (int i=0; i<objects.length; i++) {
+			terminal.write(RlTerminal.TL, objects[i], xOffset, i+yOffset, foregroundColors[i]);
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -49,12 +71,20 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void displayOutput(RlTerminal terminal) {
 		terminal.cls();
-		displayFrame(terminal);		
+		displayFrame(terminal);
+		
+		terminal.write(RlTerminal.TL, " INVENTORY ", 2, 0, Color.BLACK, Color.WHITE);
+		
+		showCategories(terminal, 2, 2);
+		showObjects(terminal, 4, 4);
+		
+		terminal.write(RlTerminal.BL, " [e] use [r] drop ", 2, 0, Color.BLACK, Color.WHITE);
+		terminal.write(RlTerminal.BR, " [esc] exit ", 2, 0, Color.BLACK, Color.WHITE);
 	}
 
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
-		return (key.getKeyCode() == KeyEvent.VK_ESCAPE) ? null : this;		
+		return key.getKeyCode() == KeyEvent.VK_ENTER ? null : this;
 	}
 	
 }

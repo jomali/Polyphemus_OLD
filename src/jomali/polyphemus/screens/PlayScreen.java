@@ -258,7 +258,7 @@ public class PlayScreen implements Screen {
 			case KeyEvent.VK_ESCAPE:
 				subscreen = new MainMenuScreen(); break;
 			case KeyEvent.VK_I:
-				subscreen = new InventoryScreen(); break;
+				subscreen = new InventoryScreen(player); break;
 			case KeyEvent.VK_L:
 				subscreen = new LogScreen(); break;
 			}

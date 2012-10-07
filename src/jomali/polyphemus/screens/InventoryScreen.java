@@ -19,8 +19,10 @@
 
 package jomali.polyphemus.screens;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 
+import jomali.polyphemus.entities.Creature;
 import jomali.polyphemus.util.RlTerminal;
 
 /**
@@ -30,7 +32,39 @@ import jomali.polyphemus.util.RlTerminal;
  */
 public class InventoryScreen implements Screen {
 	
+	private Creature creature;
+	private int category;
+	private int index;
+	private int cursor;
+	
+	public InventoryScreen(Creature creature) {
+		this.creature	= creature;
+		this.category	= 0;
+		this.index		= 0;
+		this.cursor		= 0;
+	}
+	
 	////////////////////////////////////////////////////////////////////////////
+	// Metodos para manipular la pantalla y el inventario:
+	
+	private void moveCategory(int amount) {
+		if (category == 0 && amount < 0) {
+			category = creature.inventory().numberOfCategories()-1;
+			amount++;
+		}
+		category = (category + amount) % creature.inventory().numberOfCategories();
+	}
+	
+	private void moveIndex(int amount) {
+		if (index == 0 && amount < 0) {
+			index = creature.inventory().size()-1;
+			amount++;
+		}
+		index = (index + amount) % creature.inventory().size();
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Metodos para dibujar la pantalla:
 	
 	private void displayFrame(RlTerminal terminal) {
 		terminal.writeRow(RlTerminal.TL, 0);
@@ -38,6 +72,19 @@ public class InventoryScreen implements Screen {
 		
 		terminal.writeCol(RlTerminal.TL, 0);
 		terminal.writeCol(RlTerminal.TR, 0);
+		
+		terminal.write(RlTerminal.TL, " INVENTORY ", 2, 0, Color.BLACK, Color.WHITE);
+		terminal.write(RlTerminal.BR, " @s[esc]@n exit ", 2, 0, Color.BLACK, Color.WHITE);
+	}
+	
+	private void displayCategories(RlTerminal terminal, int xOffset, int yOffset) {
+		String cat = (category+1)+ " / "+ (creature.inventory().numberOfCategories());
+		terminal.write(RlTerminal.TL, cat, xOffset, yOffset);
+	}
+	
+	private void displayItems(RlTerminal terminal, int xOffset, int yOffset) {
+		String it = (index+1)+ " / "+ (creature.inventory().size());
+		terminal.write(RlTerminal.TL, it, xOffset, yOffset);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
@@ -46,11 +93,28 @@ public class InventoryScreen implements Screen {
 	public void displayOutput(RlTerminal terminal) {
 		terminal.cls();
 		displayFrame(terminal);
+		displayCategories(terminal, 2, 2);
+		displayItems(terminal, 4, 4);
 	}
 
 	@Override
 	public Screen respondToUserInput(KeyEvent key) {
-		return key.getKeyCode() == KeyEvent.VK_ENTER ? null : this;
+		switch (key.getKeyCode()) {
+		// Movimiento entre categorias:
+		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_A:			moveCategory(-1); break;
+		case KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_D:			moveCategory( 1); break;
+		// Movimiento entre objetos:
+		case KeyEvent.VK_UP:
+		case KeyEvent.VK_W:			moveIndex(-1); break;
+		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_S:			moveIndex( 1); break;
+		// Salir de la pantalla:
+		case KeyEvent.VK_ESCAPE:	return null;
+		}
+		
+		return this;		
 	}
 	
 }

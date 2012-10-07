@@ -54,6 +54,9 @@ public class RlTerminal extends AsciiPanelAdequation {
 	public static final int MR	= 7;
 	public static final int MC	= 8;
 	
+	private Color cstyleFgColor;
+	private Color cstyleBgColor;
+	
 	/**
 	 * Constructor. Crea una nueva terminal <code>RlTerminal</code> con las 
 	 * dimensiones y los colores de frente y fondo por defecto indicados.
@@ -83,6 +86,32 @@ public class RlTerminal extends AsciiPanelAdequation {
 	 */
 	public RlTerminal() {
 		super(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_FGCOLOR, DEFAULT_BGCOLOR);
+	}
+	
+	// TODO: comments
+	private int realLength(String str) {
+		int result = 0;
+		for (int i=0; i<str.length(); i++) {
+			if (str.charAt(i) == '@') { i++; continue; }
+			result++;
+		}
+		return result;
+	}
+	
+	/**
+	 * Establece el color frontal del estilo personalizado.
+	 * @param cstyleFgColor color frontal del estilo personalizado
+	 */
+	public void setCstyleFgColor(Color cstyleFgColor) {
+		this.cstyleFgColor = cstyleFgColor;
+	}
+	
+	/**
+	 * Establece el color de fondo del estilo personalizado.
+	 * @param cstyleBgColor color de fondo del estilo personalizado
+	 */
+	public void setCstyleBgColor(Color cstyleBgColor) {
+		this.cstyleBgColor = cstyleBgColor;
 	}
 	
 	/**
@@ -167,8 +196,8 @@ public class RlTerminal extends AsciiPanelAdequation {
 		// Establece el punto de inicio de escritura en el eje horizontal:
 		switch (orientation % 3) { // 0.Left - 1.Right - 2.Center
 		case 0: break;
-		case 1: x = (gridWidth() - 1) - (text.length() - 1) - x; break;
-		case 2: x = (gridWidth() / 2) - (text.length() / 2) + x; break;
+		case 1: x = (gridWidth() - 1) - (realLength(text) - 1) - x; break;
+		case 2: x = (gridWidth() / 2) - (realLength(text) / 2) + x; break;
 		}
 		// Establece el punto de inicio de escritura en el eje vertical:
 		switch (orientation / 3) { // 0.Top - 1.Bottom - 2.Middle
@@ -176,9 +205,26 @@ public class RlTerminal extends AsciiPanelAdequation {
 		case 1: y = (gridHeight() - 1) - y; break;
 		case 2: y = (gridHeight() / 2) + y; break;
 		}
-		// Invoca al metodo de escritura de la superclase:
+		
+		Color fgColor = foregroundColor;
+		Color bgColor = backgroundColor;
 		for (int i=0; i<text.length(); i++) {
-			super.write(text.charAt(i), x+i, y, foregroundColor, backgroundColor);
+			if (text.charAt(i) == '@' && text.length() > i+1) {
+				if (text.charAt(i+1) == 'n') {
+					fgColor = foregroundColor;
+					bgColor = backgroundColor;
+				}
+				if (text.charAt(i+1) == 's') {
+					fgColor = cstyleFgColor == null ? foregroundColor : cstyleFgColor;
+					bgColor = cstyleBgColor == null ? backgroundColor : cstyleBgColor;
+				}
+				if (text.charAt(i+1) == 'i') {
+					fgColor = backgroundColor;
+					bgColor = foregroundColor;
+				}
+				text = text.substring(0, i-1) + text.substring(i+1);
+			}
+			super.write(text.charAt(i), x+i, y, fgColor, bgColor);
 		}
 	}
 	
@@ -186,6 +232,9 @@ public class RlTerminal extends AsciiPanelAdequation {
 		write(orientation, text, x, y, foregroundColor, defaultBackgroundColor()); }
 	public void write(int orientation, String text, int x, int y) {
 		write(orientation, text, x, y, defaultForegroundColor(), defaultBackgroundColor()); }
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Metodos para escribir matrices:
 	
 	/**
 	 * 
