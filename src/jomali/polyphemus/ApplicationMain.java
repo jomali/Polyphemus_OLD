@@ -28,7 +28,6 @@ import javax.swing.JFrame;
 // TODO: importar exclusivamente las clases necesarias
 import jomali.polyphemus.screens.*;
 import jomali.polyphemus.util.RlTerminal;
-import jomali.polyphemus.util.SColor;
 
 /**
  * Implementa el metodo principal que lanza la aplicacion.

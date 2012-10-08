@@ -28,7 +28,6 @@ import jomali.polyphemus.ApplicationMain;
 import jomali.polyphemus.entities.Creature;
 import jomali.polyphemus.entities.CreatureFactory;
 import jomali.polyphemus.entities.FieldOfView;
-import jomali.polyphemus.entities.Item;
 import jomali.polyphemus.entities.ItemFactory;
 import jomali.polyphemus.geography.World;
 import jomali.polyphemus.geography.WorldBuilder;

@@ -84,6 +84,31 @@ public class Inventory {
 	
 	////////////////////////////////////////////////////////////////////////////
 	
+	public Integer[] getCategories() {
+		List<Integer> categories = new LinkedList<Integer>();
+		for (int i=0; i<items.size(); i++) {
+			if (!items.get(i).isEmpty()) categories.add(i);
+		}
+		return categories.toArray(new Integer[0]);
+	}
+	
+	public List<Item> getList(int category) {
+		return items.get(category);
+	}
+	
+	public Item getItem(int category, int index) {
+		return items.get(category).get(index);
+	}
+	
+	
+	
+	
+	
+	
+	// XXX: Eliminar metodos innecesarios
+	
+	////////////////////////////////////////////////////////////////////////////
+	
 	public int numberOfCategories() {
 		return items.size();
 	}
