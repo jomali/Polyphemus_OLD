@@ -49,7 +49,7 @@ public class InventoryScreen implements Screen {
 		this.creature	= creature;
 		this.categories	= creature.inventory().getCategories();
 		this.category	= 0;
-		this.items		= creature.inventory().getList(category);
+		this.items		= creature.inventory().getList(0);
 		this.index		= 0;
 	}
 	
@@ -145,10 +145,11 @@ public class InventoryScreen implements Screen {
 		case KeyEvent.VK_ESCAPE:	return null;
 		}
 		
-		// TODO: Realizar operaciones unicamente cuando el usuario lance 
-		// acciones que puedan modificar el inventario:
-		categories	= creature.inventory().getCategories();
-		items		= creature.inventory().getList(category);
+		if (!creature.inventory().isEmpty()) {
+			categories	= creature.inventory().getCategories();
+			items		= creature.inventory().getList(categories[category]);
+			
+		}
 		
 		return this;
 	}

@@ -100,35 +100,21 @@ public class Inventory {
 		return items.get(category).get(index);
 	}
 	
-	
-	
-	
-	
-	
-	// XXX: Eliminar metodos innecesarios
-	
-	////////////////////////////////////////////////////////////////////////////
-	
-	public int numberOfCategories() {
-		return items.size();
+	public boolean isEmpty() {
+		return counter == 0;
 	}
 	
-	public int size() {
-		return counter;
-	}
-	
-	/**
-	 * Indica si el inventario esta lleno.
-	 * @return true si el inventario esta lleno, false en caso contrario
-	 */
 	public boolean isFull() {
-		if (capacity < 0) return false; // capacity = -1: capacidad ilimitada
+		if (capacity < 0) return false;
 		return counter >= capacity;
 	}
 	
-	public List<Item> get(int category) {
-		return items.get(category);
-	}
+	
+	
+	
+	
+	
+	// TODO: Eliminar metodos innecesarios
 	
 	/**
 	 * Introduce el elemento <code>item</code> en el inventario.
