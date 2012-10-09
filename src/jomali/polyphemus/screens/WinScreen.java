@@ -34,7 +34,7 @@ public class WinScreen implements Screen {
 	@Override
 	public void displayOutput(RlTerminal terminal) {
 		terminal.write(RlTerminal.TC, "You won", 0, 1);
-		terminal.write(RlTerminal.BC, "[ Press ENTER to restart ]", 0, 1);
+		terminal.write(RlTerminal.BC, "Press [ENTER] to restart", 0, 1);
 	}
 
 	@Override

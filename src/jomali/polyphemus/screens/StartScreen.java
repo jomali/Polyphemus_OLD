@@ -55,7 +55,7 @@ public class StartScreen implements Screen {
 		
 		terminal.write(RlTerminal.TC, title, 0, 1);
 		terminal.write(RlTerminal.MC, introduction, 0, 0, SColor.BLOOD);
-		terminal.write(RlTerminal.BC, "[ Press @hENTER@r to continue ]", 0, 1);
+		terminal.write(RlTerminal.BC, "Press [ENTER] to continue", 0, 1);
 		
 	}
 	

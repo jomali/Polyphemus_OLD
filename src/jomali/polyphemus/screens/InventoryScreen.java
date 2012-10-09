@@ -27,34 +27,54 @@ import java.util.ListIterator;
 import jomali.polyphemus.entities.Creature;
 import jomali.polyphemus.entities.Item;
 import jomali.polyphemus.util.RlTerminal;
+import jomali.polyphemus.util.SColor;
 
 /**
  * 
  * @author J. Francisco Martin
  *
  */
-public class InventoryScreen implements Screen {
+public class InventoryScreen extends Subscreen {
 	
 	private final String[] categoryNames = new String[] {
-			"All", "Weapons", "Attire", "Consumables", "Readings", "Miscellany"
+			"All", "Weapons", "Apparel", 
+			"Consumables", "Readings", "Miscellany", 
 	};
 	
 	private Creature creature;
+	
 	private Integer[] categories;
 	private int category;
 	private List<Item> items;
 	private int index;
 	
 	public InventoryScreen(Creature creature) {
+		super("INVENTORY");
 		this.creature	= creature;
 		this.categories	= creature.inventory().getCategories();
 		this.category	= 0;
-		this.items		= creature.inventory().getList(0);
+		this.items		= creature.inventory().getList(0); // List: ALL
 		this.index		= 0;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
-	// Metodos para manipular las categorias:
+	// Metodos privados para manipular los objetos del inventario:
+
+	// TODO: Estudiar la opcion de invocar al metodo de uso concreto del 
+	// objeto dado, en lugar del generico use(); es decir, invocar a equip() 
+	// para armas o armaduras, eat() para comestibles, read() para textos, etc.
+	private void useItem() {
+		if (items.size() == 0) return;
+		creature.use(items.get(index));
+		System.out.println("Use "+ items.get(index));
+	}
+	
+	private void dropItem() {
+		// TODO: ...
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Metodos privados para desplazarse por el inventario:
 	
 	/**
 	 * Desplaza el puntero <code>category</code> en la cantidad indicada.
@@ -65,21 +85,22 @@ public class InventoryScreen implements Screen {
 		if (category == 0 && amount < 0) category = categories.length + amount;
 		else category += amount;
 		category = category % categories.length;
-		// TODO: actualizar posicion de index al cambiar la categoria
+		
+		/*
+		 * Si <code>index</code> queda fuera de los limites de la lista de 
+		 * objetos de la nueva categoria se modifica su valor para que apunte 
+		 * a la ultima posicion de la lista.
+		 * 
+		 * En esta ocasion, la lista de objetos de la nueva categoria se saca 
+		 * con <code>creature.inventory().getList(categories[category])</code> 
+		 * en lugar de utilizar <code>items</code> porque el contenido de 
+		 * <code>items</code> solo se actualiza una vez termina de ejecutarse 
+		 * la accion lanzada por el usuario.
+		 */
+		
+		if (index >= creature.inventory().getList(categories[category]).size())
+			index = creature.inventory().getList(categories[category]).size()-1;
 	}
-	
-	private void displayCategories(RlTerminal terminal, int x0, int y0) {
-		String str = "";
-		if (categories.length == 0) str += " No categories to display ";
-		else {
-			str += " "+ category+ " / "+ (categories.length - 1)+ " ";
-			str += "- "+ categoryNames[categories[category]]+ " ";
-		}
-		terminal.write(RlTerminal.TL, str, x0, y0, Color.BLACK, Color.WHITE);
-	}
-	
-	////////////////////////////////////////////////////////////////////////////
-	// Metodos para manipular los objetos:
 	
 	/**
 	 * Desplaza el puntero <code>index</code> en la cantidad indicada.
@@ -90,6 +111,19 @@ public class InventoryScreen implements Screen {
 		if (index == 0 && amount < 0) index = items.size() + amount;
 		else index += amount;
 		index = index % items.size();
+	}
+	
+	////////////////////////////////////////////////////////////////////////////
+	// Metodos privados para mostrar los elementos de la pantalla:
+
+	private void displayCategories(RlTerminal terminal, int x0, int y0) {
+		String str = "";
+		if (categories.length == 0) str += " No categories to display ";
+		else {
+			str += " "+ category+ " / "+ (categories.length - 1)+ " ";
+			str += "- "+ categoryNames[categories[category]]+ " ";
+		}
+		terminal.write(RlTerminal.TL, str, x0, y0, Color.BLACK, Color.WHITE);
 	}
 	
 	private void displayItems(RlTerminal terminal, int x0, int y0, int y1) {
@@ -104,20 +138,16 @@ public class InventoryScreen implements Screen {
 			terminal.write(RlTerminal.TL, it.next().name(), x0, y0+2+i);
 			i++;
 		}
+		
+		if (items.size() != 0) {
+			Item item = items.get(index);
+			String itemLine = item.actionName() == null ? "" : " [E] "+ item.actionName();
+			itemLine += " [R] drop ";
+			terminal.write(RlTerminal.BL, itemLine, 2, 0, SColor.BLACK, SColor.WHITE);
+		}
 	}
 	
 	////////////////////////////////////////////////////////////////////////////
-	
-	private void displayFrame(RlTerminal terminal) {
-		terminal.writeRow(RlTerminal.TL, 0);
-		terminal.writeRow(RlTerminal.BL, 0);
-		
-		terminal.writeCol(RlTerminal.TL, 0);
-		terminal.writeCol(RlTerminal.TR, 0);
-		
-		terminal.write(RlTerminal.TL, " INVENTORY ", 2, 0, Color.BLACK, Color.WHITE);
-		terminal.write(RlTerminal.BR, " @h[esc]@r exit ", 2, 0, Color.BLACK, Color.WHITE);
-	}
 	
 	@Override
 	public void displayOutput(RlTerminal terminal) {
@@ -140,6 +170,10 @@ public class InventoryScreen implements Screen {
 		case KeyEvent.VK_W:			moveIndex(-1); break;
 		case KeyEvent.VK_DOWN:
 		case KeyEvent.VK_S:			moveIndex( 1); break;
+		// Usar objeto:
+		case KeyEvent.VK_E:			useItem(); break;
+		// Soltar objeto:
+		case KeyEvent.VK_R:			dropItem(); break;
 		// Salir de la pantalla:
 		case KeyEvent.VK_I:
 		case KeyEvent.VK_ESCAPE:	return null;

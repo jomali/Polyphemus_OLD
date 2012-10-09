@@ -93,7 +93,7 @@ public class Creature extends Entity {
 	public int z;
 	
 	public Creature(String name, char glyph, Color foregroundColor, Color backgroundColor, 
-			World world, int maxHp, int attack, int defense) {
+			World world, int maxHp, int attack, int defense, int invCapacity) {
 		super(name, glyph, foregroundColor, backgroundColor);
 		this.world			= world;
 		this.maxHp			= maxHp;
@@ -103,7 +103,7 @@ public class Creature extends Entity {
 		this.visionRadius	= 9;
 		this.attackValue	= attack;
 		this.defenseValue	= defense;
-		this.inventory		= new Inventory(20);
+		this.inventory		= new Inventory(invCapacity);
 		this.maxFood		= 1000;
 		this.food			= (maxFood / 3) * 2;
 	}
@@ -291,6 +291,14 @@ public class Creature extends Entity {
 		}
 		
 		return builder.toString().trim();
+	}
+	
+	
+	public void use(Item item) {
+		if (item instanceof Consumable) {
+			System.out.println("Item es consumable");
+			eat((Consumable) item);
+		}
 	}
 	
 	public void pickup(){

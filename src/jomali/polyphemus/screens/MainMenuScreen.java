@@ -19,42 +19,14 @@
 
 package jomali.polyphemus.screens;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-
-import jomali.polyphemus.util.RlTerminal;
-
 /**
  * 
  * @author J. Francisco Martin
  *
  */
-public class MainMenuScreen implements Screen {
-	
-	////////////////////////////////////////////////////////////////////////////
-	
-	private void displayFrame(RlTerminal terminal) {
-		terminal.writeRow(RlTerminal.TL, 0);
-		terminal.writeRow(RlTerminal.BL, 0);
-		
-		terminal.writeCol(RlTerminal.TL, 0);
-		terminal.writeCol(RlTerminal.TR, 0);
-		
-		terminal.write(RlTerminal.TL, " MAIN MENU ", 2, 0, Color.BLACK, Color.WHITE);
-		terminal.write(RlTerminal.BR, " [esc] exit ", 2, 0, Color.BLACK, Color.WHITE);
-	}
-	
-	////////////////////////////////////////////////////////////////////////////
+public class MainMenuScreen extends Subscreen {
 
-	@Override
-	public void displayOutput(RlTerminal terminal) {
-		terminal.cls();
-		displayFrame(terminal);		
-	}
-
-	@Override
-	public Screen respondToUserInput(KeyEvent key) {
-		return (key.getKeyCode() == KeyEvent.VK_ESCAPE) ? null : this;		
-	}
+	// TODO: Locations
+	public MainMenuScreen() { super("MAIN MENU"); }
 	
 }

@@ -48,5 +48,8 @@ public class Attire extends Item {
 	public void setDefenseValue(int defenseValue) { this.defenseValue = defenseValue; }
 	
 	public void modifyDefenseValue(int amount) { defenseValue += amount; }
+	
+	@Override
+	public String actionName() { return "use"; }
 
 }

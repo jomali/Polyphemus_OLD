@@ -48,5 +48,8 @@ public class Weapon extends Item {
 	public void setAttackValue(int attackValue) { this.attackValue = attackValue; }
 	
 	public void modifyAttackValue(int amount) { attackValue += amount; }
+	
+	@Override
+	public String actionName() { return "use"; }
 
 }

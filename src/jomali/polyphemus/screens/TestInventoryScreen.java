@@ -23,68 +23,52 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import jomali.polyphemus.util.RlTerminal;
+import jomali.polyphemus.util.SColor;
 
 /**
  * 
  * @author J. Francisco Martin
  *
  */
-public class TestInventoryScreen implements Screen {
+public class TestInventoryScreen extends Subscreen {
 	
-	////////////////////////////////////////////////////////////////////////////
-	
-	private void displayFrame(RlTerminal terminal) {
-		terminal.writeRow(RlTerminal.TL, 0);
-		terminal.writeRow(RlTerminal.BL, 0);
-		
-		terminal.writeCol(RlTerminal.TL, 0);
-		terminal.writeCol(RlTerminal.TR, 0);
-	}
-	
-	private void showCategories(RlTerminal terminal, int xOffset, int yOffset) {
-		String categories = "| ALL | WEAPONS | ATTIRE | CONSUMABLES | READINGS | MISCELLANY |";
-		terminal.write(RlTerminal.TL, categories, xOffset, yOffset, Color.BLACK, Color.WHITE);
-	}
-	
-	private void showObjects(RlTerminal terminal, int xOffset, int yOffset) {
-		String[] objects = new String[] {
-				"Object 1", 
-				"Object 2", 
-				"Object 3", 
-				"Object 4", 
-				"Object 5",
-		};
-		Color[] foregroundColors = new Color[] {
-				Color.GRAY, 
-				Color.GRAY,
-				Color.WHITE, 
-				Color.GRAY, 
-				Color.GRAY, 
-		};
-		for (int i=0; i<objects.length; i++) {
-			terminal.write(RlTerminal.TL, objects[i], xOffset, i+yOffset, foregroundColors[i]);
-		}
-	}
-	
-	////////////////////////////////////////////////////////////////////////////
+	public TestInventoryScreen() { super("INVENTORY"); }
 
 	@Override
 	public void displayOutput(RlTerminal terminal) {
 		terminal.cls();
 		displayFrame(terminal);
 		
-		terminal.write(RlTerminal.TL, " INVENTORY ", 2, 0, Color.BLACK, Color.WHITE);
-		
-		showCategories(terminal, 2, 2);
-		showObjects(terminal, 4, 4);
-		
-		terminal.write(RlTerminal.BL, " [e] use [r] drop ", 2, 0, Color.BLACK, Color.WHITE);
-		terminal.write(RlTerminal.BR, " [esc] exit ", 2, 0, Color.BLACK, Color.WHITE);
+		String cat = ""; int len = 0;
+		len += 2; cat = " ALL ";
+		terminal.write(RlTerminal.TL, cat, len, 2, Color.BLACK, Color.WHITE);
+		len += cat.length(); cat = " WEAPONS ";
+		terminal.write(RlTerminal.TL, cat, len, 2, Color.WHITE, Color.BLACK);
+		len += cat.length(); cat = " APPAREL ";
+		terminal.write(RlTerminal.TL, cat, len, 2, Color.BLACK, Color.WHITE);
+		len += cat.length(); cat = " CONSUMABLES ";
+		terminal.write(RlTerminal.TL, cat, len, 2, Color.BLACK, Color.WHITE);
+		len += cat.length(); cat = " READINGS ";
+		terminal.write(RlTerminal.TL, cat, len, 2, Color.BLACK, Color.WHITE);
+		len += cat.length(); cat = " MISCELLANY ";
+		terminal.write(RlTerminal.TL, cat, len, 2, Color.BLACK, Color.WHITE);
+
+		String[] objects = new String[] {
+				"Equiped: Weapon 5", "Weapon 1", "Weapon 2", 
+				"Weapon 3", "Weapon 4", "Weapon 6", 
+		};
+		Color[] foregroundColors = new Color[] {
+				SColor.LIME_GREEN, Color.GRAY, Color.WHITE, 
+				Color.GRAY, Color.GRAY, Color.GRAY, 
+		};
+		for (int i=0; i<objects.length; i++) {
+			terminal.write(RlTerminal.TL, objects[i], 4, i+4, foregroundColors[i]);
+		}
+		terminal.write(RlTerminal.BR, "Gold: 1.000 Capacity: 6/20", 2, 2);
+		terminal.write(RlTerminal.BL, " [E] equip [R] drop ", 2, 0, Color.BLACK, Color.WHITE);
 	}
 
 	@Override
-	public Screen respondToUserInput(KeyEvent key) {
-		return key.getKeyCode() == KeyEvent.VK_ENTER ? null : this;
-	}
+	public Screen respondToUserInput(KeyEvent key) { return this; }
 	
 }

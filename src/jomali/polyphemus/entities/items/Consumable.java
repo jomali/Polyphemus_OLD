@@ -48,5 +48,8 @@ public class Consumable extends Item {
 	public void setFoodValue(int foodValue) { this.foodValue = foodValue; }
 	
 	public void modifyFoodValue(int amount) { foodValue += amount; }
+	
+	@Override
+	public String actionName() { return "ingest"; }
 
 }

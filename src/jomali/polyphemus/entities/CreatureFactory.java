@@ -39,7 +39,7 @@ public class CreatureFactory {
 	public Creature newPlayer(String name, char glyph, Color color, 
 			List<String> messages, FieldOfView fov) {
 		Creature creature = new Creature(name, glyph, color, null, 
-				world, 100, 20, 5);
+				world, 100, 20, 5, -1);
 		world.addAtEmptyLocation(creature, 0);
 		new PlayerAi(creature, messages, fov);
 		return creature;
@@ -47,7 +47,7 @@ public class CreatureFactory {
 	
 	public Creature newPlayer(String name, List<String> messages, FieldOfView fov) {
 		Creature creature = new Creature(name, '@', SColor.WHITE, null, 
-				world, 100, 20, 5);
+				world, 100, 20, 5, -1);
 		world.addAtEmptyLocation(creature, 0);
 		new PlayerAi(creature, messages, fov);
 		return creature;
@@ -55,7 +55,7 @@ public class CreatureFactory {
 	
 	public Creature newFungus(int depth) {
 		Creature creature = new Creature("Fungus", 'f', SColor.GREEN_BAMBOO, null, 
-				world, 10, 0, 0);
+				world, 10, 0, 0, 1);
 		world.addAtEmptyLocation(creature, depth);
 		new FungusAi(creature, 5, this);
 		return creature;
@@ -63,7 +63,7 @@ public class CreatureFactory {
 	
 	public Creature newBat(int depth) {
 		Creature creature = new Creature("Bat", 'b', SColor.PALE_MAGENTA, null, 
-				world, 15, 5, 0);
+				world, 15, 5, 0, 5);
 		world.addAtEmptyLocation(creature, depth);
 		new BatAi(creature);
 		return creature;

@@ -109,13 +109,6 @@ public class Inventory {
 		return counter >= capacity;
 	}
 	
-	
-	
-	
-	
-	
-	// TODO: Eliminar metodos innecesarios
-	
 	/**
 	 * Introduce el elemento <code>item</code> en el inventario.
 	 * @param item, elemento a annadir al inventario
@@ -127,23 +120,10 @@ public class Inventory {
 		add(items.get(ALL), item);
 		// Se introduce el objeto en su lista particular:
 		add(items.get(category(item)), item);
-		// TODO
-		display();
 	}
 	
 	public void remove(Item item) {
 		// TODO ...
-	}
-	
-	////////////////////////////////////////////////////////////////////////////
-	
-	// TODO: Metodos de prueba. (Eliminar)
-	
-	private void display() {
-		for (int i=0; i<items.size(); i++) {
-			System.out.println(i+ ".-");
-			for (Item item : items.get(i)) System.out.println("\t- "+ item);
-		}
 	}
 
 }

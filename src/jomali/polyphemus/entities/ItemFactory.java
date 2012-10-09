@@ -19,8 +19,6 @@
 
 package jomali.polyphemus.entities;
 
-import java.awt.Color;
-
 import jomali.polyphemus.entities.Item;
 import jomali.polyphemus.entities.items.Attire;
 import jomali.polyphemus.entities.items.Consumable;
@@ -154,13 +152,16 @@ public class ItemFactory {
 	////////////////////////////////////////////////////////////////////////////
 	
 	public Item newRock(int depth) {
+		/*
 		Color[] colors = new Color[] {
 				SColor.CAMO_GREEN, SColor.COPPER_ROSE, SColor.DARK_BROWN, 
 				SColor.DARK_CHESTNUT, SColor.DARK_GRAY, SColor.DARK_SLATE_GRAY, 
 				SColor.GRAY, SColor.GRAY_ASPARAGUS, SColor.KHAKI, SColor.LAVENDER_BLUE, 
 				SColor.PALE_BROWN, SColor.SEN_NO_RIKYUS_TEA, SColor.SEPIA
 		};
-		Item item = new Item("rock", ',', colors[(int)(Math.random()*colors.length)], null);
+		Item item = new Item("Rock", ',', colors[(int)(Math.random()*colors.length)], null);
+		*/
+		Item item = new Item("Rock", ',', SColor.LIGHT_GRAY, null);
 		world.addAtEmptyLocation(item, depth);
 		return item;
 	}

@@ -26,7 +26,7 @@ import java.awt.Color;
  * @author J. Francisco Martin
  *
  */
-public class RlTerminal extends AsciiPanelAdequation {
+public class RlTerminal_codes extends AsciiPanelAdequation {
 	private static final long serialVersionUID = -3145507684118806424L;
 	
 	private static final int DEFAULT_WIDTH		= 80;
@@ -54,6 +54,9 @@ public class RlTerminal extends AsciiPanelAdequation {
 	public static final int MR	= 7;
 	public static final int MC	= 8;
 	
+	private Color highlightedFG;
+	private Color highlightedBG;
+	
 	/**
 	 * Constructor. Crea una nueva terminal <code>RlTerminal</code> con las 
 	 * dimensiones y los colores de frente y fondo por defecto indicados.
@@ -62,7 +65,7 @@ public class RlTerminal extends AsciiPanelAdequation {
 	 * @param foregroundColor color de frente por defecto del nuevo terminal
 	 * @param backgroundColor color de fondo por defecto del nuevo terminal
 	 */
-	public RlTerminal(int width, int height, Color foregroundColor, 
+	public RlTerminal_codes(int width, int height, Color foregroundColor, 
 			Color backgroundColor) {
 		super(width, height, foregroundColor, backgroundColor);
 	}
@@ -73,7 +76,7 @@ public class RlTerminal extends AsciiPanelAdequation {
 	 * @param width ancho del nuevo <code>RlTerminal</code> (num. de celdas)
 	 * @param height alto del nuevo <code>RlTerminal</code> (num. de celdas)
 	 */
-	public RlTerminal(int width, int height) {
+	public RlTerminal_codes(int width, int height) {
 		super(width, height, DEFAULT_FGCOLOR, DEFAULT_BGCOLOR);
 	}
 	
@@ -81,8 +84,34 @@ public class RlTerminal extends AsciiPanelAdequation {
 	 * Constructor. Crea una nueva terminal <code>RlTerminal</code> con las 
 	 * dimensiones y los colores de frente y fondo por defecto.
 	 */
-	public RlTerminal() {
+	public RlTerminal_codes() {
 		super(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_FGCOLOR, DEFAULT_BGCOLOR);
+	}
+	
+	// TODO: comments
+	private int realLength(String str) {
+		int result = 0;
+		for (int i=0; i<str.length(); i++) {
+			if (str.charAt(i) == '@') { i++; continue; }
+			result++;
+		}
+		return result;
+	}
+	
+	/**
+	 * Establece el color frontal para textos destacados.
+	 * @param highlightedFG color frontal para textos destacados
+	 */
+	public void setHighlightedFG(Color highlightedFG) {
+		this.highlightedFG = highlightedFG;
+	}
+	
+	/**
+	 * Establece el color de fondo para textos destacados.
+	 * @param highlightedBG color de fondo para textos destacados
+	 */
+	public void setHighlightedBG(Color highlightedBG) {
+		this.highlightedBG = highlightedBG;
 	}
 	
 	/**
@@ -167,8 +196,8 @@ public class RlTerminal extends AsciiPanelAdequation {
 		// Establece el punto de inicio de escritura en el eje horizontal:
 		switch (orientation % 3) { // 0.Left - 1.Right - 2.Center
 		case 0: break;
-		case 1: x = (gridWidth() - 1) - (text.length() - 1) - x; break;
-		case 2: x = (gridWidth() / 2) - (text.length() / 2) + x; break;
+		case 1: x = (gridWidth() - 1) - (realLength(text) - 1) - x; break;
+		case 2: x = (gridWidth() / 2) - (realLength(text) / 2) + x; break;
 		}
 		// Establece el punto de inicio de escritura en el eje vertical:
 		switch (orientation / 3) { // 0.Top - 1.Bottom - 2.Middle
@@ -177,8 +206,35 @@ public class RlTerminal extends AsciiPanelAdequation {
 		case 2: y = (gridHeight() / 2) + y; break;
 		}
 		
+		Color fgColor = foregroundColor;
+		Color bgColor = backgroundColor;
 		for (int i=0; i<text.length(); i++) {
-			super.write(text.charAt(i), x+i, y, foregroundColor, backgroundColor);
+			
+			/*
+			 * Detecta secuencias de estilo en la cadena de texto. Actualmente, 
+			 * las secuencias de estilo posibles son tres: 
+			 * 		@r - estilo regular
+			 * 		@h - estilo destacado
+			 * 		@i - estilo invertido
+			 */
+			
+			if (text.charAt(i) == '@' && text.length() > i+1) {
+				if (text.charAt(i+1) == 'r') {
+					fgColor = foregroundColor;
+					bgColor = backgroundColor;
+				}
+				if (text.charAt(i+1) == 'h') {
+					fgColor = highlightedFG == null ? foregroundColor : highlightedFG;
+					bgColor = highlightedBG == null ? backgroundColor : highlightedBG;
+				}
+				if (text.charAt(i+1) == 'i') {
+					fgColor = backgroundColor;
+					bgColor = foregroundColor;
+				}
+				// TODO: Error cuando @ esta al inicio de la cadena
+				text = text.substring(0, i-1) + text.substring(i+1);
+			}
+			super.write(text.charAt(i), x+i, y, fgColor, bgColor);
 		}
 	}
 	

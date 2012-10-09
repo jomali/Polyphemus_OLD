@@ -34,6 +34,8 @@ public class Item extends Entity {
 		super(name, glyph, foregroundColor, backgroundColor);
 	}
 	
+	public String actionName() { return null; }
+	
 	@Override
 	public int compareTo(Entity other) {
 		return this.name().toLowerCase().compareTo(other.name().toLowerCase());		

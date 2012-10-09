@@ -67,7 +67,7 @@ public class ApplicationMain extends JFrame implements KeyListener {
 		terminal = new RlTerminal(WIDTH, HEIGHT, FG_COLOR, BG_COLOR);
 		add(terminal);
 		pack();
-		screen = new StartScreen();
+		screen = new TestInventoryScreen();
 		addKeyListener(this);
 		repaint();
 		
