@@ -67,7 +67,7 @@ public class ApplicationMain extends JFrame implements KeyListener {
 		terminal = new RlTerminal(WIDTH, HEIGHT, FG_COLOR, BG_COLOR);
 		add(terminal);
 		pack();
-		screen = new TestInventoryScreen();
+		screen = new StartScreen();
 		addKeyListener(this);
 		repaint();
 		
@@ -91,15 +91,15 @@ public class ApplicationMain extends JFrame implements KeyListener {
 	public void repaint() {
 		// TODO: Se calcula el tiempo que tarda la operacion en realizarse a 
 		// fin de poder evaluar el rendimiento de la terminal.
-//		long tInicio = System.currentTimeMillis();
+		long tStart = System.currentTimeMillis();
 		
 		terminal.clear(); // TODO: implementar metodo adecuado en RlTerminal
 		screen.displayOutput(terminal);
 		super.repaint();
 		
 		// TODO: Eliminar al terminar pruebas.
-//		long tFin = System.currentTimeMillis();
-//		System.out.println("Tiempo repintado: "+ (tFin - tInicio)+ "ms.");
+		long tEnd = System.currentTimeMillis();
+		System.out.println("Time to repaint: "+ (tEnd - tStart)+ "ms.");
 	}
 	
 	/**
